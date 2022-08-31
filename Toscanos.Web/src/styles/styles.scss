@@ -1,0 +1,45 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+
+
+
+@import url("../../node_modules/primeicons/primeicons.css");
+@import url("../../node_modules/primeng/resources/themes/nova/theme.css");
+@import url("../../node_modules/primeng/resources/primeng.min.css");
+
+
+agm-map {
+    height: 300px !important;
+    width: 100%;  /* This is really important*/
+  }
+
+.sebm-google-map-container {
+    height: 300px !important;
+    width: 100%;  /* This is really important*/
+  }
+
+
+  .k-grid tbody td {
+    white-space: nowrap;
+    line-height: 10px;
+    padding: 6px 10px;
+    font-size: 10px !important;
+  }
+
+  .notification-container {
+    width: 100%;
+    height: 180px;
+    border: 1px solid #ddd;
+    margin-bottom: 25px;
+  }
+
+  .append-container {
+    z-index: 2147483647;
+    position: relative;
+    width: 50% !important;
+    height: 50px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }

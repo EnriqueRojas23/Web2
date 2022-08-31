@@ -1,0 +1,380 @@
+
+<div class="flex flex-col flex-auto min-w-0">
+
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Ordenes </a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Ordenes Pendientes
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+                 <!-- Alert -->
+                 <fuse-alert
+                 class="mt-8 -mb-4"
+                 *ngIf="showAlert"
+                 [appearance]="'fill'"
+                 [showIcon]="true"
+                 [dismissible]="true"
+                 [dismissed]="false"
+
+                 [type]="alert.type"
+                 [@shake]="alert.type === 'error'">
+                 {{alert.message}}
+                 </fuse-alert>
+
+       <!-- Main -->
+       <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w12">
+
+
+
+            <form class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-auto mb-6">
+                        <div class="w-full md:w-1/2">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listcliente">
+                                Cliente
+                            </label>
+                                <kendo-multiselect name="listcliente" id="listcliente" [data]="clientes"
+                                        scrollHeight="40vh" style="width: 250px;"
+
+                                        [(ngModel)]="selectedClientes"
+                                        [checkboxes]="true"
+                                        [textField]="'text'"
+                                        [valueField]="'value'"
+                                        [value]="selectedClientes"
+                                        (filterChange)="handleFilter($event)"
+                                        [autoClose]="false"
+                                        [filterable]="true"
+
+                                        [popupSettings]="{
+                                            width: 250,
+                                            height: 50
+                                        }"
+
+                                        filter="true">
+                                </kendo-multiselect>
+                        </div>
+                        <div class="w-full md:w-1/2 px-5 ">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listestados">
+                                        Estado
+                                    </label>
+                                    <kendo-dropdownlist name="listestados" id="listestados" [data]="listEstados"
+                                    [textField]="'text'"
+                                    [defaultItem]="defaultItem"
+                                    [valueField]="'value'"
+                                    [(ngModel)]="selectedEstados"
+                                    [value]="selectedEstados"
+
+
+                                    [style]="{'width':'160px'}">
+                                    </kendo-dropdownlist>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 ">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+                                        Tipo Servicio
+                                    </label>
+                                    <kendo-dropdownlist name="listvalortabla" id="listvalortabla" [data]="listValorTabla"
+                                    [textField]="'text'"
+                                    [defaultItem]="defaultItem"
+
+                                    [(ngModel)]="selectedValorTabla"
+                                    [value]="selectedValorTabla"
+
+
+                                    [valueField]="'value'"
+                                    [style]="{'width':'160px'}">
+                                    </kendo-dropdownlist>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 ">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                Inicio Recojo
+                            </label>
+                            <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 ">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                Fin Recojo
+                            </label>
+                            <kendo-datepicker  #picker [format]="format" [(value)]="dateFin"></kendo-datepicker>
+                        </div>
+                </div>
+                <div class="flex flex-nowrap mx-3 ml-6 mb-6">
+
+                        <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+                        <button kendoButton (click)="cerrarOt()" [primary]="true" icon="calendar">Cerrar OT</button>
+
+                </div>
+
+
+
+
+              </form>
+
+              <div class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <kendo-grid
+                        [data]="gridDataResult"
+
+                        style="height: 800px; width: 1300px;"
+                        [resizable]="true"
+
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        (pageChange)="pageChange($event)"
+
+                        [pageable]="true"
+                        [sortable]="{
+                            allowUnsort: allowUnsort,
+                            mode: 'single'
+                        }"
+                        [sort]="sort"
+                        (sortChange)="sortChange($event)"
+
+
+
+                        [selectable]="true"
+                        kendoGridSelectBy="id"
+                        [selectedKeys]="mySelection"
+                        >
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)"/>
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <button type="button" kendoGridExcelCommand icon="file-excel">
+                              Export to Excel
+                            </button>
+                          </ng-template>
+
+
+
+                    <kendo-grid-checkbox-column  [sticky]="true"  [width]="50"
+                        [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }"
+                        showSelectAll="true">
+
+                    </kendo-grid-checkbox-column>
+
+
+
+
+                    <kendo-grid-column  [sticky]="true" [headerStyle]="{
+                        'background-color': '#a8c3bc',
+                        color: '#fff',
+                        'line-height': '1em'
+                      }"
+                        field="remitente"  title="CLIENTE"  [width]="160" ></kendo-grid-column>
+                    <kendo-grid-column  [sticky]="true"  field="destinatario"  title="DESTINATARIO"  [width]="180"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+
+                    <kendo-grid-column  [sticky]="true" field="numero_manifiesto" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }" [width]="90"
+                    title="MANIFIESTO">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+
+                    </kendo-grid-column>
+
+                    <kendo-grid-column   [sticky]="true"  field="numero_ot" title="OT"  [width]="80" [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em' }" [style]="{ 'background-color': '#888', color: '#fff' }" ></kendo-grid-column>
+                    <kendo-grid-column   field="shipment"  title="SHIPMENT"  [width]="90"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+                    <kendo-grid-column   field="tracto"  title="TRACTO"  [width]="80"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+                    <kendo-grid-column   field="chofer"  title="CONDUCTOR"  [width]="190"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+                    <kendo-grid-column field="provincia_entrega" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }" [width]="110"
+                    title="PROVINCIA ENTREGA">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                    </kendo-grid-column>
+
+
+
+                    <kendo-grid-column
+                            field="fecha_carga"
+                            title="F. CARGA"
+                            [width]="80"
+                            [headerStyle]="{
+                                'background-color': '#666',
+                                color: '#fff',
+                                'line-height': '1em'
+                            }"
+
+
+                    >
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.fecha_carga | date: 'dd/MM/yyyy'}}
+                    </ng-template>
+                    </kendo-grid-column>
+
+
+
+
+                <kendo-grid-column   field="tipoServicio"  title="TIPO SERVICIO"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="estado"  title="ESTADO"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="tipoEntrega"  title="TIPO ENTREGA"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="orden_entrega"  title="ORDEN ENTREGA"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+
+                <kendo-grid-column
+                field="fecha_eta"
+                title="ETA"
+                [width]="120"
+                [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{dataItem.fecha_eta | date: 'dd/MM/yyyy hh:mm:ss'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+
+
+
+                <kendo-grid-column   field="oc"  title="OC"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+                <kendo-grid-column   field="valorizado"  title="VALORIZADO"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  S/.  {{dataItem.valorizado | number:'1.0-0'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+
+
+                <kendo-grid-column   field="delivery"  title="DELIVERY"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                </kendo-grid-column>
+
+
+                        <kendo-grid-excel
+                        fileName="ots.xlsx"
+                        [fetchData]="allData"
+                    ></kendo-grid-excel>
+
+                    <!--     <kendo-grid-column *ngFor="let col of columns" [field]="col.field"   [width]="col.width"  [title]="col.title" ></kendo-grid-column> -->
+                    </kendo-grid>
+
+             </div>
+
+               </div>
+        </div>
+
+</div>
+
+<ng-template #template>
+    <h2>TTrack</h2>
+     No existen datos para las filtros seleccionados.
+  </ng-template>
+
+
+
+
+
+<kendo-dialog title="Entrega de órden de transporte" *ngIf="opened2" (close)="close2('cancel')" [minWidth]="250" [width]="650">
+           <!-- Main -->
+<div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+<div class="flex-1 min-w12">
+
+
+
+    <form class="w-full  max-w-lg">
+        <div class="flex flex-nowrap mx-auto mb-6">
+            <div class="w-full md:w-1/2 px-5 ">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listestados">
+                    Estado
+                </label>
+                <kendo-dropdownlist name="listtipoentrega" id="listtipoentrega" [data]="listTipoEntrega"
+                [textField]="'text'"
+                [defaultItem]="defaultItem"
+                [valueField]="'value'"
+                [(ngModel)]="selectedTiposEntrega"
+                [value]="selectedTiposEntrega"
+
+
+                [style]="{'width':'160px'}">
+                </kendo-dropdownlist>
+        </div>
+        <div class="w-full md:w-1/2 px-3 ">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+               Fecha Entrega
+            </label>
+            <kendo-datepicker  #picker [format]="format" [(value)]="dateEntrega"></kendo-datepicker>
+        </div>
+        <button kendoButton (click)="ActualizarEntrega()" icon="save"> Actualizar</button>
+        </div>
+    </form>
+</div>
+</div>
+
+
+</kendo-dialog>
+

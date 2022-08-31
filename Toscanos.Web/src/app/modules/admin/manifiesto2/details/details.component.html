@@ -1,0 +1,164 @@
+<div class="flex flex-col flex-auto md:w-180 md:min-w-160 -m-6">
+    <ng-container *ngIf="(note$ | async) as note">
+
+        <div class="flex mb-4">
+
+            <div class="m-4 w-1/3">
+                <!-- Title -->
+                    <div class="mb-5 row">
+                        <label for="valorizado" > (+)  Valorizado </label>
+                        <input
+                        class="w-full p-2 text-2xl"
+                        [(ngModel)]="note.valorizado"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+
+                    <!-- (input)="updateNoteDetails(note)" -->
+                    </div>
+                    <!-- Note -->
+                    <div  class="mb-5 row">
+
+                    <label for="estiba" > (+)  Adicionales  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.adicionales_tarifa"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+
+
+
+                    </div>
+            </div>
+            <div class="m-4 w-1/3">
+                <div class="mb-5 row">
+                    <label for="otros" > (+)  Sobreestadia </label>
+                    <input
+                    class="w-full  p-2 text-2xl"
+                    [(ngModel)]="note.sobreestadia_tarifa"
+                    type="number"
+                    appTwoDigitDecimaNumber
+                    />
+
+                </div>
+
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (+)  Retorno  </label>
+                    <input
+                    class="w-full  p-2 text-2xl"
+                    [(ngModel)]="note.retorno_tarifa"
+                    type="number"
+                    appTwoDigitDecimaNumber
+                    />
+
+                </div>
+            </div>
+            <div class="m-4 w-1/3 ">
+                <!-- Title -->
+                <!-- <div class="mb-5 row">
+                    <label for="valorizado" > (-)  Estiba </label>
+                    <input
+                        class="w-full p-2 text-2xl"
+
+                        [(ngModel)]="note.estiba"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                         (input)="updateNoteDetails(note)"
+                </div>
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (-)   Estiba Adicional  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.estiba_adicional"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div> -->
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (-)   Otros gastos  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.otrosgastos"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div>
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (-)   Costo tercero  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.costotercero"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div>
+            </div>
+            <div class="m-4 w-1/3 ">
+                <!-- <div class="mb-5 row">
+                    <label for="adicionales" >  (-)  Bejarano Pucallpa  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.bejaranopucallpa"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div>
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (-)  Bejarano Iquitos  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.bejaranoiquitos"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div> -->
+                <!-- <div class="mb-5 row">
+                    <label for="adicionales" >  (-)   Oriental  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.oriental"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div>
+                <div class="mb-5 row">
+                    <label for="adicionales" >  (-)   Fluvial  </label>
+                    <input
+                        class="w-full  p-2 text-2xl"
+                        [(ngModel)]="note.fluvial"
+                        type="number"
+                        appTwoDigitDecimaNumber
+                        />
+                </div> -->
+                      <!-- Edit Actions -->
+                      <ng-container *ngIf="note.id">
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center space-x-2">
+
+                            <!-- <button
+                                    mat-icon-button
+                                    (click)="toggleArchiveOnNote(note)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:archive'"></mat-icon>
+                                </button> -->
+                                <!-- Delete -->
+                                <button
+                                    mat-icon-button
+                                    (click)="updateNote(note)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:refresh'"></mat-icon>
+                                </button>
+                            </div>
+                            <!-- Close -->
+                            <button
+                                mat-flat-button
+                                matDialogClose>
+                                Cerrar
+                            </button>
+                        </div>
+                    </ng-container>
+            </div>
+        </div>
+    </ng-container>
+
+</div>

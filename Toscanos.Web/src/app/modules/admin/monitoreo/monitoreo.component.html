@@ -1,0 +1,186 @@
+<aside class="page-aside">
+    <div class="be-scroller-aside">
+      <div class="aside-content">
+
+        <div class="navbar aside-nav collapse" id="aside-spy">
+            <div *ngFor="let item of ordenes "  >
+                <section class=" widget widget-card bg-principal">
+                <div class="widget-body clearfix">
+                <div class="bg-gray text-white">
+                    <div class="col-xs-1">
+                            <span class="widget-icon">
+                                <i class="fa fa-truck"></i>
+                            </span>
+                    </div>
+                <div class="col-xs-2">
+                <h5 class="no-margin"> Placa : {{ item.placa }} </h5>
+                <p class="h3 no-margin fw-normal"></p>
+                </div>
+                <div class="col-xs-3">
+                <h6 class="no-margin"></h6>
+                <p class="h3 no-margin fw-normal">  {{ item.nombreCompleto }}</p>
+                </div>
+
+                </div>
+                </div>
+                </section>
+             </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                     Monitoreo de Flota
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1">
+            <form class="w-full">
+
+                <div class="flex flex-nowrap mx-1 mb-1">
+                    <div class="w-full px-3 ">
+
+                     <div id="map" style="width:100%;height:400px"></div>
+                    <!-- <div id="indicators"></div> -->
+                    <!-- <agm-map [latitude]="lat"   [longitude]="lng" [zoom]="zoom">
+                        <agm-marker #maker [latitude]="lat"
+
+                          [iconUrl]="{
+                            url: '/assets/images/27-512.png',
+                            scaledSize: {
+                                width: 30,
+                                height: 30
+                            }
+                        }"
+                        [longitude]="lng"></agm-marker>
+                      </agm-map> -->
+
+
+
+
+                    </div>
+
+                </div>
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <div class="w-full">
+
+                            <!-- <kendo-grid
+                            [data]="gridDataResult"
+                            style="height: 600px; width: 1200px;"
+                            [pageSize]="10"
+                            [selectable]="true"
+
+                            >
+
+
+
+
+                        <kendo-grid-checkbox-column [width]="50"
+                        [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }"
+                        showSelectAll="true">
+
+                        </kendo-grid-checkbox-column>
+
+
+                        <kendo-grid-column   field="remitente"  title="CLIENTE"  [width]="110"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }" >
+                        </kendo-grid-column>
+
+
+                        <kendo-grid-column
+                                field="numero_ot"
+                                title="OT"
+                                [width]="80"
+                                [headerStyle]="{
+                                    'background-color': '#666',
+                                    color: '#fff',
+                                    'line-height': '1em'
+                                }"
+                            [style]="{ 'background-color': '#888', color: '#fff' }"
+
+                        >
+
+                        </kendo-grid-column>
+
+                        <kendo-grid-column
+                                field="fecha_carga"
+                                title="FEC. CARGA"
+                                [width]="80"
+                                [headerStyle]="{
+                                    'background-color': '#666',
+                                    color: '#fff',
+                                    'line-height': '1em'
+                                }"
+
+
+                        >
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.fecha_carga | date: 'dd/MM/yyyy'}}
+                        </ng-template>
+                        </kendo-grid-column>
+
+
+                        <kendo-grid-column   field="estado"  title="ESTADO"  [width]="90"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column   field="orden_entrega"  title="ORDEN DE ENTREGA"  [width]="90"    [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="provincia_entrega" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }" [width]="110"
+                        title="PROVINCIA ENTREGA">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="numero_manifiesto" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }" [width]="150"
+                        title="MANIFIESTO">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                        </kendo-grid-column>
+
+
+                            <kendo-grid-column *ngFor="let col of columns" [field]="col.field"   [width]="col.width"  [title]="col.title" ></kendo-grid-column>
+                        </kendo-grid> -->
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

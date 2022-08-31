@@ -1,0 +1,36 @@
+<form class="w-full  max-w-lg">
+<div class="flex flex-nowrap mx-3 ml-6 mb-6">
+
+    <button kendoButton (click)="verfiles()"  fillMode="flat" icon="file">Ver Files</button>
+
+</div>
+<div class="flex flex-nowrap mx-6 ml-6 mb-12">
+
+<kendo-treelist
+      kendoTreeListExpandable
+      [data]="rootData | async"
+      [fetchChildren]="fetchChildren"
+      [hasChildren]="hasChildren"
+      [selectable]="settings"
+      kendoTreeListSelectable
+      idField="nombrearchivo"
+      parentIdField="nombrearchivo"
+      [(selectedItems)]="selected"
+      [height]="800"
+
+    >
+      <kendo-treelist-column [expandable]="true" title="Nombre" [width]="250">
+        <ng-template kendoTreeListCellTemplate let-dataItem>
+          {{ dataItem.nombrearchivo }}
+        </ng-template>
+      </kendo-treelist-column>
+      <kendo-treelist-column field="Position" title="Posición" [width]="180">
+      </kendo-treelist-column>
+      <kendo-treelist-column field="Extension" title="Extensión" [width]="180">
+      </kendo-treelist-column>
+    </kendo-treelist>
+
+
+</div>
+
+</form>

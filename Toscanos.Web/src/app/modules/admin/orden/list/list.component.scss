@@ -1,0 +1,52 @@
+.alert-class {
+    margin-top: 70px;
+    margin-right: 10px;
+    font-size: 11pt;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+
+   .k-grid .no-padding {
+    padding: 0;
+  }
+  .whole-cell {
+    display: block;
+    padding: 8px 12px; /* depends on theme */
+  }
+
+
+#indicators {
+  padding: 16px;
+  height: 40%;
+  width: 100%;
+  overflow-y: auto;
+  display: block;
+}
+
+.agm-map {
+    height: 300px !important;
+    width: 100%;  /* This is really important*/
+  }
+
+  .sebm-google-map-container {
+    height: 300px !important;
+    width: 100%;  /* This is really important*/
+  }
+
+:host ::ng-deep .p-rowgroup-footer td {
+    font-weight: 700;
+}
+
+:host ::ng-deep .p-rowgroup-header {
+    span {
+        font-weight: 700;
+    }
+
+    .p-row-toggler {
+        vertical-align: middle;
+        margin-right: .25rem;
+    }
+}
+
+

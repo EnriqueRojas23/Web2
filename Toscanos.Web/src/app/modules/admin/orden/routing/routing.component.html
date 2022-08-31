@@ -1,0 +1,167 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Direcciones  / Rutas</a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Asignar Rutas
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1">
+            <form class="w-full">
+                <div class="flex flex-wrap mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                    <input
+                            id="pac-input"
+                            class="controls"
+                            type="text"
+                            placeholder="Búsqueda de dirección"
+                        />
+                        <!-- <div class="col-xs-12 col-sm-6 col-lg-3 example-col">
+                        <p class="k-block" style="background-color: #ccc;"> -->
+                            <button kendoButton  [primary]="true" (click)="calculateRoute()">Calcular Ruta</button>
+                            <button kendoButton look="clear"   (click)="regresar()">Regresar</button>
+                         <!-- </p>
+                        </div> -->
+
+                    </div>
+                </div>
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <div class="w-full px-3 ">
+
+                    <div id="map" style="width:100%;height:400px"></div>
+                    <!-- <div id="indicators"></div> -->
+                    </div>
+
+                </div>
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <div class="w-full">
+
+                            <kendo-grid
+                            [data]="gridDataResult"
+                            style="height: 600px; width: 1200px;"
+                            [pageSize]="10"
+                            [selectable]="true"
+
+                            >
+
+
+
+
+                        <kendo-grid-checkbox-column [width]="50"
+                        [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }"
+                        showSelectAll="true">
+
+                        </kendo-grid-checkbox-column>
+
+
+                        <kendo-grid-column   field="remitente"  title="CLIENTE"  [width]="110"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }" >
+                        </kendo-grid-column>
+
+
+                        <kendo-grid-column
+                                field="numero_ot"
+                                title="OT"
+                                [width]="80"
+                                [headerStyle]="{
+                                    'background-color': '#666',
+                                    color: '#fff',
+                                    'line-height': '1em'
+                                }"
+                            [style]="{ 'background-color': '#888', color: '#fff' }"
+
+                        >
+
+                        </kendo-grid-column>
+
+                        <kendo-grid-column
+                                field="fecha_carga"
+                                title="FEC. CARGA"
+                                [width]="80"
+                                [headerStyle]="{
+                                    'background-color': '#666',
+                                    color: '#fff',
+                                    'line-height': '1em'
+                                }"
+
+
+                        >
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.fecha_carga | date: 'dd/MM/yyyy'}}
+                        </ng-template>
+                        </kendo-grid-column>
+
+
+                        <kendo-grid-column   field="estado"  title="ESTADO"  [width]="90"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column   field="orden_entrega"  title="ORDEN DE ENTREGA"  [width]="90"    [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="provincia_entrega" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }" [width]="110"
+                        title="PROVINCIA ENTREGA">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="numero_manifiesto" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                        }" [width]="150"
+                        title="MANIFIESTO">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                        </kendo-grid-column>
+
+
+                        <!--     <kendo-grid-column *ngFor="let col of columns" [field]="col.field"   [width]="col.width"  [title]="col.title" ></kendo-grid-column> -->
+                        </kendo-grid>
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

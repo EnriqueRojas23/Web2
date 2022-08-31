@@ -1,0 +1,539 @@
+
+
+<div class="flex flex-col flex-auto min-w-0">
+
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                         <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Activity</a>
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Actividad diaria
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-full">
+
+          <div class="main-content mb-10 container-fluid">
+
+            <div class="flex">
+
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Inicio Recojo
+                        </label>
+                        <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
+
+
+                    <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+                    </div>
+
+           </div>
+
+           <div class="flex">
+
+            <div class="w-1/2 px-3 mt-10">
+
+                <h5 class="no-margin">AVANCE</h5>
+                <kendo-circulargauge  style="width: 90px; height: 90px;"    [value]="value" [scale]="{ max: 100 }">
+                    <ng-template kendoCircularGaugeCenterTemplate let-value="value">
+                        {{ value }}%
+                    </ng-template>
+                </kendo-circulargauge>
+           </div>
+           <div class="w-1/2 px-3 mt-10">
+
+            <h5 class="no-margin">OTIF</h5>
+            <kendo-circulargauge  style="width: 90px; height: 90px;"    [value]="value" [scale]="{ max: 100 }">
+                <ng-template kendoCircularGaugeCenterTemplate let-value="value">
+                    {{ value }}%
+                </ng-template>
+            </kendo-circulargauge>
+       </div>
+
+            </div>
+
+
+         <div class="flex">
+
+
+
+            <div class="w-1/2 px-3 ">
+
+
+                    <kendo-chart title="Estados de las rutas">
+                        <kendo-chart-legend position="bottom"></kendo-chart-legend>
+
+                        <kendo-chart-series>
+                            <kendo-chart-series-item
+                                type="pie"
+                                [data]="datoschart"
+                                field="value"
+                                categoryField="category"
+                                [labels]="{ visible: true, content: labelContent }"
+                            >
+                            </kendo-chart-series-item>
+                            </kendo-chart-series>
+                    </kendo-chart>
+
+
+            </div>
+
+            <div class="w-1/2  px-3">
+
+                <kendo-chart title="Estados de las órdenes">
+                    <kendo-chart-legend position="bottom"></kendo-chart-legend>
+
+                    <kendo-chart-series>
+                        <kendo-chart-series-item
+                            type="pie"
+                            [data]="datoschart2"
+                            field="value"
+                            categoryField="category"
+                            [labels]="{ visible: true, content: labelContent2 }"
+                        >
+                        </kendo-chart-series-item>
+                        </kendo-chart-series>
+                </kendo-chart>
+
+            </div>
+
+
+            </div>
+
+
+          </div>
+
+
+
+
+
+
+
+
+          <div class="flex">
+
+            <div class="w-full px-3 ">
+
+
+
+            <kendo-grid
+            [data]="gridDataResult"
+
+            style="height: 600px; width: 1100px;"
+            [resizable]="true"
+
+            [pageSize]="pageSize"
+            [skip]="skip"
+            (pageChange)="pageChange($event)"
+
+            [pageable]="true"
+            [sortable]="{
+                allowUnsort: allowUnsort,
+                mode: 'single'
+            }"
+            [sort]="sort"
+            (sortChange)="sortChange($event)"
+
+
+
+
+            [selectable]="true"
+            kendoGridSelectBy="id"
+
+            >
+
+
+
+
+            <kendo-grid-column  [sticky]="true" [headerStyle]="{
+            'background-color': '#a8c3bc',
+            color: '#fff',
+            'line-height': '1em'
+            }"
+            field="placa"  title="PLACA"  [width]="100" ></kendo-grid-column>
+
+            <kendo-grid-column  [sticky]="true"  field="chofer"  title="CONDUCTOR"  [width]="100"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+
+            <kendo-grid-column  [sticky]="true" field="pendientes" [headerStyle]="{
+            'background-color': '#666',
+            color: '#fff',
+            'line-height': '1em'
+            }" [width]="90"
+            title="PENDIENTES">
+            <ng-template kendoGridGroupHeaderTemplate let-value="value">
+            {{ value }}
+            </ng-template>
+
+            </kendo-grid-column>
+            <kendo-grid-column   [sticky]="true"  field="entregados" title="ENTREGADOS"  [width]="80" ></kendo-grid-column>
+        <kendo-grid-column   [sticky]="true"  field="entregadosOK" title="APROBADO"  [width]="80"  [style]="{'opacity': '0.6', 'background-color': '#229954', 'color': '#fff' }" ></kendo-grid-column>
+            <kendo-grid-column   [sticky]="true"  field="entregadosParcial" title="PARCIAL"  [width]="80"  [style]="{ 'opacity': '0.6', 'background-color': '#E7E117', 'color': '#fff' }" ></kendo-grid-column>
+            <kendo-grid-column   [sticky]="true"  field="entregadosRechazo" title="RECHAZADO"  [width]="80"  [style]="{'opacity': '0.6',  'background-color': '#E72317', 'color': '#fff' }" ></kendo-grid-column>
+
+            <kendo-grid-column  [sticky]="true" field="avance" [width]="90"
+                 title="% AVANCE">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <span
+                    *ngIf="dataItem.avance === 100.00"
+                    class="badge badge-success"
+                    > {{ dataItem.avance }}</span
+                >
+                <span
+                    *ngIf="dataItem.avance !== 100.00"
+                    class="badge badge-danger"
+                    > {{ dataItem.avance }}</span
+                >
+                </ng-template>
+            </kendo-grid-column>
+
+
+            <kendo-grid-column   field="total"  title="TOTAL"  [width]="90"
+               [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+
+            </kendo-grid>
+
+            </div>
+
+
+            </div>
+
+
+          </div>
+
+
+                    <div class="grid grid-cols-3 gap-2">
+
+                        <p-carousel [value]="bucle2" [numVisible]="1"
+                        [circular]="true" [showIndicators]="false" [showNavigators]="false"
+                        orientation="vertical" [style]="{'max-width':'500px', 'margin-top':'2em'}"  [autoplayInterval]="3000" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+                            <ng-template let-car pTemplate="item">
+
+                                <div *ngIf="car.titulo === 'PROVINCIA'">
+                                        <section class=" widget widget-card bg-principal">
+                                        <div class="widget-body clearfix">
+                                        <div class="row text-white">
+                                        <div class="col-xs-3">
+                                        <span class="widget-icon">
+                                        <i class="fa fa-truck"></i>
+                                        </span>
+                                        </div>
+                                        <div class="col-xs-9">
+                                        <h4 class="no-margin"> {{ car.titulo }} </h4>
+                                        <p class="h2 no-margin fw-normal">{{  model.provincias }} Manifiestos pendientes </p>
+                                        </div>
+                                        </div>
+
+                                        <div class="bg-gray text-white">
+                                        <div class="col-xs-3">
+                                        <span class="widget-icon">
+                                        <i class="fa fa-clock-o"></i>
+                                        </span>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-md-12">
+                                        <p id="dia" class="h2 no-margin color fw-normal">{{ model.provincias_recojo  }}</p>
+                                        <h6 class="no-margin">Recojo (s) </h6>
+                                        </div>
+
+
+                                        </div>
+                                        </div>
+
+                                        </div>
+                                        </section>
+                                </div>
+                                 <div *ngIf="car.titulo === 'OPERACIONES EN PROVINCIAS'">
+                                    <section class=" widget widget-card bg-principal">
+                                    <div class="widget-body clearfix">
+                                    <div class="bg-gray text-white">
+                                    <div class="col-xs-1">
+                                    <span class="widget-icon">
+                                        <i class="fa fa-id-card"></i>
+                                    </span>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    <h5 class="no-margin">OPERACION DE PROVINCIAS</h5>
+                                    <p class="h3 no-margin fw-normal">{{ model.vehiculosenruta  }} Vehículo(s) en ruta</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <p class="h3 no-margin fw-normal">{{ model.total_ots_provincia  }} Total entregas</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <p class="h3 no-margin fw-normal">{{ model.entregadas_ot_provincia  }} entregadas</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <p class="h3 no-margin fw-normal">{{ model.porcentaje_provincia }} % Gestionadas</p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </section>
+                                 </div>
+
+                            </ng-template>
+                        </p-carousel>
+
+
+
+
+                        <p-carousel [value]="bucle4" [numVisible]="1"
+                        [circular]="true" [showIndicators]="false" [showNavigators]="false"
+                        orientation="vertical" [style]="{'max-width':'500px', 'margin-top':'2em'}"  [autoplayInterval]="3000" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+                            <ng-template let-car pTemplate="item">
+
+                                <div *ngIf="car.titulo === 'ÚLTIMA MILLA'">
+
+                                <section class=" widget widget-card bg-quinto col-4   ">
+                                        <div class="widget-body clearfix">
+                                        <div class="row text-white">
+                                        <div class="col-xs-3">
+                                        <span class="widget-icon">
+                                            <i class="fa fa-truck"></i>
+                                        </span>
+                                        </div>
+                                        <div class="col-xs-9">
+                                        <h6 class="no-margin">ÚLTIMA MILLA</h6>
+                                        <p class="h2 no-margin fw-normal">{{ model.ultimamilla  }} Manifiestos Hoy</p>
+                                        </div>
+                                        </div>
+
+                                        <div class="bg-quinto text-white">
+                                        <div class="col-xs-3">
+                                        <span class="widget-icon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </span>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="dia" class="h2 no-margin color fw-normal">{{ model.ultimamilla_recojo  }}</p>
+                                            <h6 class="no-margin">Recojo (s) </h6>
+                                        </div>
+
+
+                                        </div>
+                                        </div>
+
+                                        </div>
+                                </section>
+
+                                </div>
+
+                                <div *ngIf="car.titulo === 'OPERACIONES ÚLTIMA MILLA'">
+
+                                <section class=" widget widget-card bg-quinto col-12  ">
+                                <div class="widget-body clearfix">
+                                <div class="bg-quinto text-white">
+                                <div class="col-xs-1">
+                                <span class="widget-icon">
+                                    <i class="fa fa-id-card"></i>
+                                </span>
+                                </div>
+                                <div class="col-xs-2">
+                                <h5 class="no-margin">OPERACION DE ÚLTIMA MILLA</h5>
+                                <p class="h3 no-margin fw-normal">{{ model.vehiculosenruta  }} Vehículo(s) en ruta</p>
+                                </div>
+                                <div class="col-xs-3">
+                                <h6 class="no-margin"></h6>
+                                <p class="h3 no-margin fw-normal">{{ model.total_ots  }} Total entregas</p>
+                                </div>
+                                <div class="col-xs-3">
+                                <h6 class="no-margin"></h6>
+                                <p class="h3 no-margin fw-normal">{{ model.entregadas_ot  }} entregadas</p>
+                                </div>
+                                <div class="col-xs-3">
+                                <h6 class="no-margin"></h6>
+                                <!-- <p class="h3 no-margin fw-normal">{{ (model.entregadas_ot==null?0: parseFloat(model.entregadas_ot)  /  model.total_ots==null?1:parseFloat(model.total_ots) ) * 100 }} % Gestionadas</p> -->
+                                <p class="h3 no-margin fw-normal">{{ model.porcentaje }} % Gestionadas</p>
+                                </div>
+                                </div>
+                                </div>
+                                </section>
+
+                                </div>
+
+                        </ng-template>
+                       </p-carousel>
+
+
+
+                        <p-carousel [value]="bucle5" [numVisible]="1"
+                        [circular]="true" [showIndicators]="false" [showNavigators]="false"
+                        orientation="vertical" [style]="{'max-width':'500px', 'margin-top':'2em'}"  [autoplayInterval]="3000" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+                            <ng-template let-car pTemplate="item">
+                                <div *ngIf="car.titulo === 'VET'">
+                                    <section class=" widget widget-card bg-tercero col-4   ">
+                                    <div class="widget-body clearfix">
+                                    <div class="row text-white">
+                                    <div class="col-xs-3">
+                                    <span class="widget-icon">
+                                    <i class="fa fa-truck"></i>
+                                    </span>
+                                    </div>
+                                    <div class="col-xs-9">
+                                    <h4 class="no-margin">VET</h4>
+                                    <p class="h2 no-margin fw-normal">{{ model.vet  }} Manifiestos Hoy</p>
+                                    </div>
+                                    </div>
+
+                                    <div class="bg-tercero text-white">
+                                    <div class="col-xs-3">
+                                    <span class="widget-icon">
+                                    <i class="fa fa-clock-o"></i>
+                                    </span>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                    <p id="dia" class="h2 no-margin color fw-normal">{{ model.vet_recojo  }}</p>
+                                    <h6 class="no-margin">Recojo (s) </h6>
+                                    </div>
+
+
+                                    </div>
+                                    </div>
+
+                                    </div>
+                                    </section>
+
+                                </div>
+
+                                <div *ngIf="car.titulo === 'OPERACIONES VET'">
+
+                                    <section class=" widget widget-card bg-tercero col-12  ">
+                                    <div class="widget-body clearfix">
+                                    <div class="bg-tercero text-white">
+                                    <div class="col-xs-1">
+                                    <span class="widget-icon">
+                                    <i class="fa fa-id-card"></i>
+                                    </span>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    <h5 class="no-margin">OPERACION VET</h5>
+                                    <p class="h3 no-margin fw-normal">{{ model.vehiculosenruta  }} Vehículo(s) en ruta</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <p class="h3 no-margin fw-normal">{{ model.total_ots_vet  }} Total entregas</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <p class="h3 no-margin fw-normal">{{ model.entregadas_ot_vet  }} entregadas</p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                    <h6 class="no-margin"></h6>
+                                    <!-- <p class="h3 no-margin fw-normal">{{ (model.entregadas_ot==null?0: parseFloat(model.entregadas_ot)  /  model.total_ots==null?1:parseFloat(model.total_ots) ) * 100 }} % Gestionadas</p> -->
+                                    <p class="h3 no-margin fw-normal">{{ model.porcentaje_local_vet }} % Gestionadas</p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </section>
+
+                                </div>
+
+                              </ng-template>
+                        </p-carousel>
+
+
+                        <p-carousel [value]="bucle6" [numVisible]="1"
+                        [circular]="true" [showIndicators]="false" [showNavigators]="false"
+                        orientation="vertical" [style]="{'max-width':'500px', 'margin-top':'2em'}"  [autoplayInterval]="3000" [numScroll]="1" [responsiveOptions]="responsiveOptions">
+                            <ng-template let-car pTemplate="item">
+
+                                <div *ngIf="car.titulo === 'AASS'">
+
+                                <section class=" widget widget-card bg-cuarto col-4   ">
+                                    <div class="widget-body clearfix">
+                                    <div class="row text-white">
+                                        <div class="col-xs-3">
+                                            <span class="widget-icon">
+                                                <i class="fa fa-truck"></i>
+                                            </span>
+                                        </div>
+                                        <div class="col-xs-9">
+                                            <h4 class="no-margin">AASS</h4>
+                                            <p class="h2 no-margin fw-normal">{{ model.aass  }} Manifiestos Hoy</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-cuarto text-white">
+                                        <div class="col-xs-3">
+                                            <span class="widget-icon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </span>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="dia" class="h2 no-margin color fw-normal">{{ model.aass_recojo  }}</p>
+                                            <h6 class="no-margin">Recojo (s) </h6>
+                                        </div>
+
+
+                                    </div>
+                                    </div>
+
+                                    </div>
+                                </section>
+
+                                </div>
+
+                                <div *ngIf="car.titulo === 'OPERACIONES AASS'">
+                                    <section class=" widget widget-card bg-cuarto col-12  ">
+                                        <div class="widget-body clearfix">
+                                        <div class="bg-cuarto text-white">
+                                            <div class="col-xs-1">
+                                                <span class="widget-icon">
+                                                    <i class="fa fa-id-card"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-xs-2">
+                                            <h5 class="no-margin">OPERACION AASS</h5>
+                                            <p class="h3 no-margin fw-normal">{{ model.vehiculosenruta  }} Vehículo(s) en ruta</p>
+                                            </div>
+                                            <div class="col-xs-3">
+                                            <h6 class="no-margin"></h6>
+                                            <p class="h3 no-margin fw-normal">{{ model.total_ots_aass  }} Total entregas</p>
+                                            </div>
+                                            <div class="col-xs-3">
+                                            <h6 class="no-margin"></h6>
+                                            <p class="h3 no-margin fw-normal">{{ model.entregadas_ot_aass  }} entregadas</p>
+                                            </div>
+                                            <div class="col-xs-3">
+                                            <h6 class="no-margin"></h6>
+                                            <!-- <p class="h3 no-margin fw-normal">{{ (model.entregadas_ot==null?0: parseFloat(model.entregadas_ot)  /  model.total_ots==null?1:parseFloat(model.total_ots) ) * 100 }} % Gestionadas</p> -->
+                                            <p class="h3 no-margin fw-normal">{{ model.porcentaje_aass }} % Gestionadas</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </section>
+
+                                </div>
+
+                            </ng-template>
+                        </p-carousel>
+
+
+
+                    </div>
+
+
+
+
+    </div>

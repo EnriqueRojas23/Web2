@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "618iTIiLagwd4lrlcUHfPgxYA9i7dAl7kIF0R91kZMGm0BAjA0BtuUp1emEF+yUcaty4iK5rDQU7rxej2vyx3A==",
+  "success": true,
+  "projectFilePath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kike_\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.5.0\\runtime.native.system.data.sqlclient.sni.4.5.0.nupkg.sha512",
+    "C:\\Users\\kike_\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\kike_\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\kike_\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,358 @@
+
+
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Manifiesto</a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Manifiestos - Centro de Costos
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+
+
+       <!-- Main -->
+       <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w12">
+
+            <form class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-auto mb-6">
+                        <div class="w-full md:w-1/2">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listcliente">
+                                Cliente
+                            </label>
+                                <kendo-multiselect name="listcliente" id="listcliente" [data]="clientes"
+                                        scrollHeight="40vh" style="width: 250px;"
+
+                                        [(ngModel)]="selectedClientes"
+                                        [checkboxes]="true"
+                                        [textField]="'text'"
+                                        [valueField]="'value'"
+                                        [value]="selectedClientes"
+                                        (filterChange)="handleFilter($event)"
+                                        [autoClose]="false"
+                                        [filterable]="true"
+
+                                        [popupSettings]="{
+                                            width: 250,
+                                            height: 50
+                                        }"
+
+                                        filter="true">
+                                </kendo-multiselect>
+                        </div>
+
+                        <div class="w-full md:w-1/2 px-3 ">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                Inicio Recojo
+                            </label>
+                            <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 ">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                Fin Recojo
+                            </label>
+                            <kendo-datepicker  #picker [format]="format" [(value)]="dateFin"></kendo-datepicker>
+                        </div>
+                </div>
+                <div class="flex flex-nowrap mx-3 ml-6 mb-6">
+
+                        <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+
+
+                </div>
+
+
+
+
+              </form>
+
+              <div class="w-full  max-w-lg">
+                <div class="flex mx-3 mb-6">
+                    <kendo-grid
+                        [data]="gridDataResult"
+
+                        style="height: 800px; width: 2100px;"
+                        [resizable]="true"
+
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        (pageChange)="pageChange($event)"
+
+                        [pageable]="true"
+                        [sortable]="{
+                            allowUnsort: allowUnsort,
+                            mode: 'single'
+                        }"
+                        [sort]="sort"
+                        (sortChange)="sortChange($event)"
+
+
+                        [isGroupExpanded]="isGroupExpanded"
+                        (groupCollapse)="toggleGroup($event)"
+                        (groupExpand)="toggleGroup($event)"
+
+                        [groupable]="{ showFooter: true }"
+                        [group]="groups"
+                        (groupChange)="groupChange($event)"
+
+                        [selectable]="true"
+                        kendoGridSelectBy="id"
+                        [selectedKeys]="mySelection"
+                        >
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)"/>
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <button type="button" kendoGridExcelCommand icon="file-excel">
+                              Exportar a Excel
+                            </button>
+                          </ng-template>
+
+
+
+                    <kendo-grid-column width="320" title="Details">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <button class="k-button" [secondary]="true" (click)="openManifiestoDialog(dataItem)">Liquidación</button>
+                          <button class="k-button" [primary]="true" (click)="openCentroCostoDialog(dataItem)">Centro Costo</button>
+                          <button class="k-button" [primary]="true"  (click)="editar(dataItem)">Facturación</button>
+
+                        </ng-template>
+                     </kendo-grid-column>
+
+
+
+                    <kendo-grid-column  [sticky]="true" field="numero_manifiesto" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }" [width]="90"
+                    title="MANIFIESTO">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+                    </kendo-grid-column>
+
+
+                    <kendo-grid-column   field="facturado"  title="FACTURADO"  [width]="90"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+                    <kendo-grid-column   field="placas"  title="TRACTO"  [width]="80"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+
+
+
+
+                    <kendo-grid-column
+                            field="fecha_salida"
+                            title="F. SALIDA"
+                            [width]="80"
+                            [headerStyle]="{
+                                'background-color': '#666',
+                                color: '#fff',
+                                'line-height': '1em'
+                            }"
+
+
+                    >
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.fecha_salida | date: 'dd/MM/yyyy'}}
+                    </ng-template>
+                    </kendo-grid-column>
+
+
+
+
+
+                <kendo-grid-column   field="valorizado"  title="VALORIZADO"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  S/.  {{dataItem.valorizado | number:'1.0-0'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+                <kendo-grid-column   field="adicionales_tarifa"  title="ADICIONALES"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  S/.  {{dataItem.adicionales_tarifa | number:'1.0-0'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="retorno_tarifa"  title="RETORNO"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  S/.  {{dataItem.retorno_tarifa | number:'1.0-0'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+                <kendo-grid-column   field="sobreestadia_tarifa"  title="SOBREESTADIA"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  S/.  {{dataItem.sobreestadia_tarifa | number:'1.0-0'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+
+                    <kendo-grid-excel
+                        fileName="ots.xlsx"
+                        [fetchData]="allData"
+                    ></kendo-grid-excel>
+
+                    </kendo-grid>
+
+
+                </div>
+               </div>
+
+        </div>
+
+</div>
+
+<ng-template #template>
+    <h2>TTrack</h2>
+     No existen datos para las filtros seleccionados.
+  </ng-template>
+
+
+
+
+  <kendo-dialog title="Facturación" *ngIf="opened2" (close)="close2('cancel')" [minWidth]="250" [width]="650">
+
+
+
+        <div class="flex flex-nowrap mx-2 mb-6">
+            <kendo-label
+            class="k-checkbox-label"
+            [for]="notification"
+            text="Facturado"
+          ></kendo-label>
+          <input type="checkbox"
+               [(ngModel)]="checkfacServicio" #notification
+               kendoCheckBox />
+
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                           Facturación Servicio
+                        </label>
+                        <kendo-datepicker  [disabled]="!checkfacServicio" #picker [format]="format" [(value)]="facServicio"></kendo-datepicker>
+
+
+
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Número de Facturación Servicio
+                         </label>
+                           <input type="text" name="numfactura"  [(ngModel)]="model.numServicio" [disabled]="!checkfacServicio" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                    </div>
+
+
+
+        </div>
+
+        <div class="flex flex-nowrap  mx-2 mb-6">
+            <kendo-label
+            class="k-checkbox-label"
+            [for]="notification2"
+            text="Facturado"
+          ></kendo-label>
+          <input type="checkbox"   [(ngModel)]="checkfacAdicional" #notification2 kendoCheckBox />
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Facturación Adicional
+                        </label>
+                        <kendo-datepicker  [disabled]="!checkfacAdicional" #picker1 [format]="format" [(value)]="facAdicional"></kendo-datepicker>
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            N° de Facturación Adicional
+                         </label>
+                           <input type="text" name="numfactura"  [(ngModel)]="model.numAdicional" [disabled]="!checkfacAdicional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                    </div>
+
+
+        </div>
+
+        <div class="flex flex-nowrap  mx-2 mb-6">
+            <kendo-label
+            class="k-checkbox-label"
+            [for]="notification3"
+            text="Facturado"
+          ></kendo-label>
+          <input type="checkbox"   [(ngModel)]="checkfacSobreestadia" #notification3 kendoCheckBox />
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Facturación Sobreestadia
+                        </label>
+                        <kendo-datepicker  [disabled]="!checkfacSobreestadia"  #picker2 [format]="format" [(value)]="facSobreestadia"></kendo-datepicker>
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            N° de Facturación Sobreestadía
+                         </label>
+                           <input type="text" name="numfactura" [(ngModel)]="model.numSobreestadia" [disabled]="!checkfacSobreestadia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                    </div>
+
+
+        </div>
+        <div class="flex flex-nowrap  mx-2 mb-6">
+            <kendo-label
+            class="k-checkbox-label"
+            [for]="notification4"
+            text="Facturado"
+          ></kendo-label>
+          <input type="checkbox"  [(ngModel)]="checkfacRetorno"   #notification4 kendoCheckBox />
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Facturación Retorno
+                        </label>
+                        <kendo-datepicker  [disabled]="!checkfacRetorno" #picker3 [format]="format" [(value)]="facRetorno"></kendo-datepicker>
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            N° de Facturación Retorno
+                         </label>
+                           <input type="text" name="numfactura" [(ngModel)]="model.numRetorno" [disabled]="!checkfacRetorno" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                    </div>
+
+
+        </div>
+
+        <button kendoButton  [icon]="'folder'"
+        [look]="'outline'"
+        [style.color]="'white'"
+        [style.backgroundColor]="isActive ? 'rebeccaPurple' : 'white'" (click)="guardar()">Guardar</button>
+        <button kendoButton   (click)="close2()">Cerrar</button>
+
+
+</kendo-dialog>

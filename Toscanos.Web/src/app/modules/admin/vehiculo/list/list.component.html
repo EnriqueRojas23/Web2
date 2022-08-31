@@ -1,0 +1,459 @@
+
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Vehiculos</a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Gestión de vehículos
+                    </h2>
+                </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w12">
+            <form class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-3 mb-6">
+
+                        <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+                                Placa
+                            </label>
+                            <kendo-textbox
+                            [style.width.px]="250"
+                            name="placa"
+                            id="placa"
+                            placeholder="Placa"
+                            [(ngModel)]="model.placa"
+                            [clearButton]="true"  >
+                           </kendo-textbox>
+                        </div>
+
+
+                        <div class="w-full md:w-1/2 px-3 ">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+                               Proveedor
+                            </label>
+                            <kendo-dropdownlist name="listvalortabla" id="listvalortabla" [data]="listProveedores"
+                            [textField]="'text'"
+                            [defaultItem]="defaultItem"
+
+                            [(ngModel)]="selectedProveedor"
+                            [value]="selectedProveedor"
+
+
+                            [valueField]="'value'"
+                            [style]="{'width':'460px'}">
+                            </kendo-dropdownlist>
+                         </div>
+
+
+
+
+
+
+
+                </div>
+                <div class="flex flex-nowrap mx-3 ml-6 mb-6">
+
+                        <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+
+                        <button kendoButton (click)="nuevo()" icon="plus"> Nuevo</button>
+
+
+                </div>
+
+
+
+
+              </form>
+
+              <div class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <kendo-grid
+                        [data]="gridDataResult"
+
+                        style="height: 600px; width: 1300px;"
+                        [resizable]="true"
+
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        (pageChange)="pageChange($event)"
+
+                        [pageable]="true"
+
+                        [sort]="sort"
+                        (sortChange)="sortChange($event)"
+
+                        [selectable]="true"
+                        kendoGridSelectBy="id"
+
+
+
+                        >
+                        <ng-template kendoGridToolbarTemplate>
+                            <button type="button" kendoGridExcelCommand icon="file-excel">
+                              Export to Excel
+                            </button>
+                          </ng-template>
+
+                          <kendo-grid-column width="180" title="Details">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+
+                              <button class="k-button" [primary]="true" (click)="editar(dataItem)">Editar</button>
+                              <button class="k-button" [primary]="true" (click)="eliminar(dataItem)">Eliminar</button>
+
+                            </ng-template>
+                         </kendo-grid-column>
+
+
+                    <kendo-grid-column  [sticky]="true" [headerStyle]="{
+                        'background-color': '#a8c3bc',
+                        color: '#fff',
+                        'line-height': '1em'
+                      }"
+                       field="placa"  title="PLACA"  [width]="100" ></kendo-grid-column>
+
+
+                    <kendo-grid-column  [sticky]="true"  field="marca"  title="MARCA"  [width]="120"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+
+                    <kendo-grid-column  [sticky]="true" field="tipoVehiculo" [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }" [width]="160"  title="TIPO VEHÍCULO">
+                        <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                        {{ value }}
+                        </ng-template>
+
+                    </kendo-grid-column>
+
+                    <!-- [style]="{ 'background-color': '#888', color: '#fff' }" -->
+
+                    <kendo-grid-column   [sticky]="true"  field="cargaUtil" title="CARGA UTIL"  [width]="120" [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em' }"  ></kendo-grid-column>
+                    <kendo-grid-column   field="pesoBruto"  title="PESO BRUTO"  [width]="120"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+                    <kendo-grid-column   field="proveedor"  title="PROVEEDOR"  [width]="180"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+                    <kendo-grid-column   field="confveh"  title="CONFIGURACIÓN"  [width]="180"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+
+
+
+
+
+
+                <kendo-grid-column   field="estado"  title="ESTADO"  [width]="160"    [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <span
+                          class="whole-cell"
+                          [style.backgroundColor]="colorCode(dataItem.estado)"
+                        >
+                          {{ dataItem.estado }}
+                        </span>
+                      </ng-template>
+
+                </kendo-grid-column>
+
+
+
+                <kendo-grid-column
+                field="fecha_eta"
+                title="ETA"
+                [width]="120"
+                [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{dataItem.fecha_eta | date: 'dd/MM/yyyy hh:mm:ss'}}
+                </ng-template>
+
+                </kendo-grid-column>
+
+
+
+                        <kendo-grid-excel
+                        fileName="ots.xlsx"
+
+                    ></kendo-grid-excel>
+
+                    <!--     <kendo-grid-column *ngFor="let col of columns" [field]="col.field"   [width]="col.width"  [title]="col.title" ></kendo-grid-column> -->
+                    </kendo-grid>
+
+             </div>
+
+               </div>
+        </div>
+
+</div>
+
+
+<kendo-dialog title="Nuevo" *ngIf="opened2" (close)="close2('cancel')" [minWidth]="250" [width]="650">
+    <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Proveedor
+        </label>
+        <kendo-dropdownlist name="listproveedor" id="listproveedor" [data]="listProveedores"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedProveedor"
+        [value]="selectedProveedores"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+     <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Marca
+        </label>
+        <kendo-dropdownlist name="listmarca" id="listmarca" [data]="listMarcas"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedMarca"
+        [value]="selectedMarcas"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+     <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Tipo
+        </label>
+        <kendo-dropdownlist name="listtipo" id="listtipo" [data]="listTipos"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedTipo"
+        [value]="selectedTipos"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+
+     <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Placa
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="placa"
+        id="placa"
+        placeholder="Placa"
+        [(ngModel)]="model.placa"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+
+
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Peso Bruto
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="pesoBruto"
+        id="pesoBruto"
+        placeholder="Peso Bruto"
+        [(ngModel)]="model.pesoBruto"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+
+
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Volumen
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="volumen"
+        id="volumen"
+        placeholder="Volumen"
+        [(ngModel)]="model.volumen"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Configuración
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="confveh"
+        id="confveh"
+        placeholder="confveh"
+        [(ngModel)]="model.confveh"
+        [clearButton]="true">
+       </kendo-textbox>
+    </div>
+
+    <div class="w-full md:w-1/2 px-3 mt-3">
+      <button kendoButton (click)="guardar()" fillMode="flat" icon="file">Guardar</button>
+      <button kendoButton (click)="close2()" fillMode="flat" icon="file">Cerrar</button>
+    </div>
+
+</kendo-dialog>
+
+
+<kendo-dialog title="Editar" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="650">
+    <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Proveedor
+        </label>
+        <kendo-dropdownlist name="listproveedor" id="listproveedor" [data]="listProveedores"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedProveedor"
+        [value]="selectedProveedores"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+     <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Marca
+        </label>
+        <kendo-dropdownlist name="listmarca" id="listmarca" [data]="listMarcas"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedMarca"
+        [value]="selectedMarcas"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+     <div class="w-full md:w-1/2 px-3 ">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+           Tipo
+        </label>
+        <kendo-dropdownlist name="listtipo" id="listtipo" [data]="listTipos"
+        [textField]="'text'"
+        [defaultItem]="defaultItem"
+
+        [(ngModel)]="selectedTipo"
+        [value]="selectedTipos"
+
+
+        [valueField]="'value'"
+        [style]="{'width':'460px'}">
+        </kendo-dropdownlist>
+     </div>
+
+     <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Placa
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="placa"
+        id="placa"
+        placeholder="Placa"
+        [(ngModel)]="model.placa"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+
+
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Peso Bruto
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="pesoBruto"
+        id="pesoBruto"
+        placeholder="Peso Bruto"
+        [(ngModel)]="model.pesoBruto"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+
+
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Volumen
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="volumen"
+        id="volumen"
+        placeholder="Volumen"
+        [(ngModel)]="model.volumen"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+    <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="placa">
+            Configuración
+        </label>
+        <kendo-textbox
+        [style.width.px]="250"
+        name="confveh"
+        id="confveh"
+        placeholder="confveh"
+        [(ngModel)]="model.confveh"
+        [clearButton]="true"  >
+       </kendo-textbox>
+    </div>
+
+    <div class="w-full md:w-1/2 px-3 mt-3">
+      <button kendoButton (click)="actualizar()" fillMode="flat" icon="file">Actualizar</button>
+      <button kendoButton (click)="close()" fillMode="flat" icon="file">Cerrar</button>
+
+
+    </div>
+
+</kendo-dialog>
+
+<kendo-dialog
+      title="Mensaje de confirmación"
+      *ngIf="opened3"
+      (close)="close3('cancel')"
+      [minWidth]="250"
+      [width]="450"
+    >
+      <p style="margin: 30px; text-align: center;">
+       ¿Desea eliminar el vehículo?
+      </p>
+      <kendo-dialog-actions>
+        <button kendoButton (click)="close3('no')">No</button>
+        <button kendoButton (click)="close3('yes')" themeColor="primary">
+          Si
+        </button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
+

@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "rqxTU4eK/88ScvXOYL7qMNyqDRtfUaN07u2cYftHew0=",
+  "Source": "CargaClic.API",
+  "BasePath": "_content/CargaClic.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "CargaClic.API\\wwwroot",
+      "Source": "CargaClic.API",
+      "ContentRoot": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Toscanos.API\\wwwroot\\",
+      "BasePath": "_content/CargaClic.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

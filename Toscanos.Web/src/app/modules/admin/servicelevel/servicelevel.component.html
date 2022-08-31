@@ -1,0 +1,105 @@
+
+<div class="flex flex-col flex-auto min-w-0">
+
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Ordenes</a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Ordenes
+                    </h2>
+                </div>
+
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w12">
+
+
+            <form class="w-full  max-w-lg">
+                <div class="flex flex-nowrap mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-1">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listcliente">
+                            Cliente
+                        </label>
+                            <kendo-dropdownlist name="listcliente" id="listcliente" [data]="clientes"
+                                    scrollHeight="40vh" style="width: 250px;"
+                                    [defaultItem]="defaultItem"
+                                    [(ngModel)]="selectedClientes"
+
+                                    [textField]="'text'"
+                                    [valueField]="'value'"
+                                    [value]="selectedClientes"
+                                    (filterChange)="handleFilter($event)"
+                                    [filterable]="true"
+
+
+                                    [popupSettings]="{
+                                        width: 250,
+                                        height: 50
+                                    }"
+
+                                    filter="true">
+                            </kendo-dropdownlist>
+                    </div>
+
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+                        Tipo Servicio
+                    </label>
+                    <kendo-dropdownlist name="listvalortabla" id="listvalortabla" [data]="listValorTabla"
+                    [textField]="'text'"
+                    [defaultItem]="defaultItem"
+
+                    [(ngModel)]="selectedValorTabla"
+                    [value]="selectedValorTabla"
+
+
+                    [valueField]="'value'"
+                    [style]="{'width':'160px'}">
+                    </kendo-dropdownlist>
+               </div>
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Inicio Recojo
+                    </label>
+                    <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Fin Recojo
+                    </label>
+                    <kendo-datepicker  #picker [format]="format" [(value)]="dateFin"></kendo-datepicker>
+                </div>
+
+
+                <div class="flex flex-nowrap mx-3 ml-6 mb-6">
+
+                    <button class="k-button" kendoButton (click)="buscar()"> Ver Reporte   </button>
+
+                </div>
+
+            </div>
+        </form>
+        </div>
+
+</div>
+
+</div>
+

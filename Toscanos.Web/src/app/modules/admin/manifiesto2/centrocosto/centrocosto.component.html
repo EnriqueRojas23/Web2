@@ -1,0 +1,259 @@
+<!-- <kendo-dialog title="Facturación" *ngIf="opened" (close)="close()" [minWidth]="250" [width]="650"> -->
+
+    <ng-container *ngIf="(manifiesto$ | async) as manifiesto">
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.estiba_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Estiba
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.estiba_facturado" #picker [format]="format" [(value)]="manifiesto.estiba_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Estiba
+                     </label>
+                       <input type="text" name="estibadocumento"  [(ngModel)]="manifiesto.estiba_numerodoc" [disabled]="!manifiesto.estiba_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Costo Estiba
+                     </label>
+                       <input type="text" name="estiba"  [(ngModel)]="manifiesto.estiba" [disabled]="!manifiesto.estiba_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Estiba (-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.estibaadicional_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Estiba Adicional
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.estibaadicional_facturado" #picker [format]="format" [(value)]="manifiesto.estibaadicional_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Estiba Adicional
+                     </label>
+                       <input type="text" name="estibaadicionaldocumento"  [(ngModel)]="manifiesto.estibaadicional_numerodoc" [disabled]="!manifiesto.estibaadicional_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Costo Estiba Adicional
+                     </label>
+                       <input type="text" name="estiba_adicional"  [(ngModel)]="manifiesto.estiba_adicional" [disabled]="!manifiesto.estibaadicional_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Estiba Adicional (-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.bejarano_pucallpa_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Bej, Pucallpa
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.bejarano_pucallpa_facturado" #picker [format]="format" [(value)]="manifiesto.bejarano_pucallpa_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Bej. Pucallpa
+                     </label>
+                       <input type="text" name="bejaranopucallpadocumento"  [(ngModel)]="manifiesto.bejarano_pucallpa_numerodoc" [disabled]="!manifiesto.bejarano_pucallpa_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Bej. Pucallpa Adicional
+                     </label>
+                       <input type="text" name="bejaranopucallpa"  [(ngModel)]="manifiesto.bejaranopucallpa" [disabled]="!manifiesto.bejarano_pucallpa_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Bejarano Pucallpa (-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.bejarano_iquitos_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Bej, Iquitos
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.bejarano_iquitos_facturado" #picker [format]="format" [(value)]="manifiesto.bejarano_iquitos_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Bej. Iquitos
+                     </label>
+                       <input type="text" name="bejaranoiquitosadocumento"  [(ngModel)]="manifiesto.bejarano_iquitos_numerodoc" [disabled]="!manifiesto.bejarano_iquitos_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Bej. Iquitos Adicional
+                     </label>
+                       <input type="text" name="bejaranopucallpa"  [(ngModel)]="manifiesto.bejaranoiquitos" [disabled]="!manifiesto.bejarano_iquitos_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Bejarano Iquitos(-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.oriental_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Oriental
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.oriental_facturado" #picker [format]="format" [(value)]="manifiesto.oriental_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Oriental
+                     </label>
+                       <input type="text" name="orientaldocumento"  [(ngModel)]="manifiesto.oriental_numerodoc" [disabled]="!manifiesto.oriental_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Oriental Adicional
+                     </label>
+                       <input type="text" name="orientalpucallpa"  [(ngModel)]="manifiesto.oriental" [disabled]="!manifiesto.oriental_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Oriental(-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.fluvial_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Fluvial
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.fluvial_facturado" #picker [format]="format" [(value)]="manifiesto.fluvial_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Fluvial
+                     </label>
+                       <input type="text" name="fluvialdocumento"  [(ngModel)]="manifiesto.fluvial_numerodoc" [disabled]="!manifiesto.fluvial_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Fluvial Adicional
+                     </label>
+                       <input type="text" name="fluvialpucallpa"  [(ngModel)]="manifiesto.fluvial" [disabled]="!manifiesto.fluvial_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Fluvial(-)" required>
+                </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <button kendoButton  [icon]="'folder'"
+    [look]="'outline'"
+    [style.color]="'white'"
+    [style.backgroundColor]="isActive ? 'rebeccaPurple' : 'white'" (click)="guardar(manifiesto)">Guardar</button>
+    <button kendoButton   (click)="close()">Cerrar</button>
+
+</ng-container>
+
+<!--
+</kendo-dialog> -->
