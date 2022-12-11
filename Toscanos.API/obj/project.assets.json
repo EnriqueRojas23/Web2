@@ -9003,11 +9003,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Toscanos.API\\CargaClic.API.csproj",
+      "projectUniqueName": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\toscanos.api\\CargaClic.API.csproj",
       "projectName": "CargaClic.API",
-      "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Toscanos.API\\CargaClic.API.csproj",
+      "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\toscanos.api\\CargaClic.API.csproj",
       "packagesPath": "C:\\Users\\kike_\\.nuget\\packages\\",
-      "outputPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Toscanos.API\\obj\\",
+      "outputPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\toscanos.api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
@@ -9029,23 +9029,23 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj"
             },
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Data\\CargaClic.Data\\CargaClic.Data.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Data\\CargaClic.Data\\CargaClic.Data.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Data\\CargaClic.Data\\CargaClic.Data.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Data\\CargaClic.Data\\CargaClic.Data.csproj"
             },
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Domain\\CargaClic.Domain\\CargaClic.Domain.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Domain\\CargaClic.Domain\\CargaClic.Domain.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Domain\\CargaClic.Domain\\CargaClic.Domain.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Domain\\CargaClic.Domain\\CargaClic.Domain.csproj"
             },
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Escritura\\CargaCLic.repository\\CargaClic.Repository.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Escritura\\CargaCLic.repository\\CargaClic.Repository.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Escritura\\CargaCLic.repository\\CargaClic.Repository.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Escritura\\CargaCLic.repository\\CargaClic.Repository.csproj"
             },
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaClic.Handlers\\CargaClic.Handlers.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaClic.Handlers\\CargaClic.Handlers.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaClic.Handlers\\CargaClic.Handlers.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaClic.Handlers\\CargaClic.Handlers.csproj"
             },
-            "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj": {
-              "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj"
+            "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj": {
+              "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj"
             }
           }
         }

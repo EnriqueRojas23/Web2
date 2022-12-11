@@ -57,6 +57,22 @@
                                         filter="true">
                                 </kendo-multiselect>
                         </div>
+                          <div class="w-full md:w-1/2 px-3 ">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+                                        Tipo Servicio
+                                    </label>
+                                    <kendo-dropdownlist name="listvalortabla" id="listvalortabla" [data]="listValorTabla"
+                                    [textField]="'text'"
+                                    [defaultItem]="defaultItem"
+
+                                    [(ngModel)]="selectedValorTabla"
+                                    [value]="selectedValorTabla"
+
+
+                                    [valueField]="'value'"
+                                    [style]="{'width':'160px'}">
+                                    </kendo-dropdownlist>
+                        </div>
 
                         <div class="w-full md:w-1/2 px-3 ">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -74,6 +90,7 @@
                 <div class="flex flex-nowrap mx-3 ml-6 mb-6">
 
                         <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+                        <button kendoButton (click)="mavivo()" fillMode="flat" icon="file">Facturar</button>
 
 
                 </div>
@@ -88,7 +105,7 @@
                     <kendo-grid
                         [data]="gridDataResult"
 
-                        style="height: 800px; width: 2100px;"
+                        style="height: 800px; width: 1200px;"
                         [resizable]="true"
 
                         [pageSize]="pageSize"
@@ -123,6 +140,18 @@
                               Exportar a Excel
                             </button>
                           </ng-template>
+
+
+
+                    <kendo-grid-checkbox-column  [sticky]="true"  [width]="50"
+                    [headerStyle]="{
+                        'background-color': '#666',
+                        color: '#fff',
+                        'line-height': '1em'
+                    }"
+                    showSelectAll="true">
+
+                </kendo-grid-checkbox-column>
 
 
 
@@ -221,6 +250,114 @@
                 </ng-template>
 
                 </kendo-grid-column>
+
+
+                <kendo-grid-column   field="valorizado"  title="ESTIBA"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.estiba | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="valorizado"  title="ESTIBA ADICIONAL"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.estiba_adicional | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+                <kendo-grid-column   field="valorizado"  title="BEJARANO PUCALLPA"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.bejaranopucallpa | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="valorizado"  title="BEJARANO IQUITOS"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.bejaranoiquitos | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+
+                <kendo-grid-column   field="valorizado"  title="BEJARANO IQUITOS"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.bejaranoiquitos | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+
+                <kendo-grid-column   field="valorizado"  title="ORIENTAL"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.oriental | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="valorizado"  title="ORIENTAL"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.oriental | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+                <kendo-grid-column   field="valorizado"  title="FLUVIAL"  [width]="90"    [headerStyle]="{
+                    'background-color': '#666',
+                    color: '#fff',
+                    'line-height': '1em'
+                }">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                    S/.  {{dataItem.fluvial | number:'1.0-0'}}
+                    </ng-template>
+
+                </kendo-grid-column>
+
+
+
+
+                <!-- fluvial -->
+
+
+
+
+
+
 
 
                     <kendo-grid-excel

@@ -13,10 +13,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 export class AuthService
 {
+    public jwtHelper = new JwtHelperService();
     private _authenticated = false;
 
     private baseUrl = environment.baseUrl + '/api/auth/';
-    private jwtHelper = new JwtHelperService();
     private decodedToken: any;
     private menu?: any[];
     /**
@@ -102,6 +102,11 @@ export class AuthService
 
                 localStorage.setItem('token', user.token);
                 this.decodedToken = this.jwtHelper.decodeToken(user.token);
+
+                const esCliente = JSON.stringify(user.rol_id);
+
+
+                localStorage.setItem('escliente', esCliente);
 
 
                 // Store the access token in the local storage

@@ -8,7 +8,7 @@ namespace CargaClic.ReadRepository.Interface.Seguimiento
     {
          Task<IEnumerable<GetManifiestoResult>> GetAllManifiestos(int ChoferId);
          Task<IEnumerable<GetManifiestoResult>> GetAllManifiestoCliente(int ClienteId);
-         Task<IEnumerable<GetManifiestoResult>> GetAllManifiestos(string ids, int idusuario , string inicio, string fin);
+         Task<IEnumerable<GetManifiestoResult>> GetAllManifiestos(string ids, int idusuario , string inicio, string fin, int? tiposervicioid);
 
          
 

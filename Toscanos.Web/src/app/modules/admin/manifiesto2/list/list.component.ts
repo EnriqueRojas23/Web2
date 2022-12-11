@@ -48,6 +48,7 @@ alert: { type: FuseAlertType; message: string } = {
 public listClientes: Array<{ text: string; value: number }> = [];
 public clientes: Array<{ text: string; value: number }> = [];
 public selectedCliente: { text: string; value: number };
+public listValorTabla: Array<{ text: string; value: number }> = [];
 public selectedClientes: any[] =[];
 
 jwtHelper = new JwtHelperService();
@@ -93,7 +94,10 @@ public sort: SortDescriptor[] = [
      dir: 'asc',
    }
  ];
-
+ public defaultItem: { text: string; value: number } = {
+    text: 'Seleccione uno...',
+    value: null,
+  };
 public format: FormatSettings = {
     displayFormat: 'dd/MM/yyyy',
     inputFormat: 'dd/MM/yy',
@@ -107,6 +111,7 @@ public format: FormatSettings = {
    facAdicional: Date = new Date(Date.now()) ;
    facSobreestadia: Date = new Date(Date.now()) ;
    facRetorno: Date = new Date(Date.now()) ;
+   public selectedValorTabla: { text: string; value: number };
 
    private popupRef: PopupRef;
 
@@ -138,6 +143,15 @@ public format: FormatSettings = {
 
     this.ordenService.getClientes('', this.decodedToken.nameid ).subscribe((list) => {
 
+        this.ordenService.getValoresTabla(22).subscribe((list3) => {
+
+            list3.forEach((x) => {
+                this.listValorTabla.push ({ text: x.valorPrincipal , value: x.id });
+            });
+
+
+        });
+
         list.forEach((x) => {
             this.listClientes.push ({ text: x.razon_social , value: x.id });
         });
@@ -160,6 +174,11 @@ public format: FormatSettings = {
           }
       });
   }
+  mavivo(): void {
+    this.currentItem = null;
+    this.opened2 = true;
+    this.currentItem = this.mySelection;
+}
   openCentroCostoDialog(manifiesto: Manifiesto): void
   {
     //DetailsManifiestoComponent
@@ -210,6 +229,13 @@ public format: FormatSettings = {
             this.model.numRetorno = value.fecha_retorno_facturado===null? '' : value.numRetorno ;
 
 
+            // this.checkfacRetorno = value.retorno_facturado;
+            // this.facRetorno =  value.fecha_retorno_facturado===null?new Date(Date.now()):new Date(value.fecha_retorno_facturado);
+            // this.model.numRetorno = value.fecha_retorno_facturado===null? '' : value.numRetorno ;
+
+
+
+
   });
 }
   public close2(action): void {
@@ -218,8 +244,17 @@ public format: FormatSettings = {
   }
   guardar(): void {
 
+    if(this.currentItem.length > 1) {
 
-    this.model.id = this.currentItem.id;
+    }
+    else     {
+        this.model.id = this.currentItem.id;
+    }
+
+
+
+
+
 
     if(this.checkfacServicio){
         this.model.fecha_facturado =  moment(this.facServicio).format('DD/MM/YYYY');
@@ -264,10 +299,16 @@ public format: FormatSettings = {
     }
 
 
-    this.manifiestoService.updateInvoiceManifiesto(this.model).subscribe((resp) => {
+    if(this.currentItem.length > 1) {
+
+        this.currentItem.forEach((element) => {
+            this.model.id = element;
+
+            this.manifiestoService.updateInvoiceManifiesto(this.model).subscribe((resp) => {
+            });
 
 
-
+        });
         this.notificationService.show({
             content: 'Los datos han sido registrados de manera exitosa.',
             position: { horizontal: 'right', vertical: 'top' },
@@ -279,8 +320,31 @@ public format: FormatSettings = {
             hideAfter: 5000
           });
 
+    }
+    else     {
 
-        });
+        this.manifiestoService.updateInvoiceManifiesto(this.model).subscribe((resp) => {
+
+            this.notificationService.show({
+                content: 'Los datos han sido registrados de manera exitosa.',
+                position: { horizontal: 'right', vertical: 'top' },
+                animation: { type: 'fade', duration: 1000 },
+                type: { style: 'success', icon: true },
+                height: 70,
+                width: 390,
+                cssClass: 'alert-class' ,
+                hideAfter: 5000
+              });
+
+
+
+
+            });
+    }
+
+
+
+
         this.close2('');
 
   }
@@ -352,12 +416,15 @@ public pageChange({ skip, take }: PageChangeEvent): void {
 private loadItems(): void {
     let ids = '';
 
+
     this.selectedClientes.forEach( (x)=> {
 
          ids = ids  + ',' + x.value;
     });
 
-    this.manifiestoService.getManifiestos( ids,this.dateInicio , this.dateFin,this.decodedToken.nameid  ).subscribe((products) => {
+
+
+    this.manifiestoService.getManifiestos( ids,this.dateInicio , this.dateFin,this.decodedToken.nameid , this.selectedValorTabla?.value).subscribe((products) => {
 
           this.result =  products;
 

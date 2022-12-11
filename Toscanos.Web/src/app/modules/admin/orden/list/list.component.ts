@@ -6,7 +6,7 @@ import {  Router } from '@angular/router';
 /* eslint-disable @typescript-eslint/ban-types */
 import { SortDescriptor, process, GroupDescriptor, State, orderBy } from '@progress/kendo-data-query';
 import { OrdenService } from './../orden.service';
-import {  ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {  ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { DataBindingDirective, DataStateChangeEvent, GridDataResult, GroupRowArgs, PageChangeEvent, PageSizeItem, SelectableSettings } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
@@ -48,7 +48,11 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class ListOrdenComponent implements OnInit {
     @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
 
-    @ViewChild('template', { read: TemplateRef })
+    // @ViewChild('template', { read: TemplateRef })
+
+    @ViewChild('appendTo', { read: ViewContainerRef, static: false })
+    public appendTo: ViewContainerRef;
+
 
     files1: TreeNode[];
     files2: TreeNode[];
@@ -96,7 +100,7 @@ export class ListOrdenComponent implements OnInit {
 
     public currentItem;
     public pageSizes = true;
-    public pageSize = 20000;
+    public pageSize = 200;
     public previousNext = true;
 
     public pagerTypes = ['numeric', 'input'];
@@ -109,11 +113,12 @@ export class ListOrdenComponent implements OnInit {
     id_interval: any;
     private popupRef: PopupRef;
 
+    public escliente =  'false';
     incidencias: Incidencia[] = [];
 
 
 
-     public groups: GroupDescriptor[] = [{ field: 'remitente' , aggregates: this.aggregates } ,{ field: 'estado' , aggregates: this.aggregates}  ];
+     public groups: GroupDescriptor[] = [ { field: 'estado' , aggregates: this.aggregates}  ]; //{ field: 'remitente' , aggregates: this.aggregates }
 
      public expandedKeys: Array<{ field: string; value: any }> = [
         { field: 'Category.CategoryName', value: 'Beverages' },
@@ -151,7 +156,7 @@ export class ListOrdenComponent implements OnInit {
 
 
         this.service.getAllIncidencias(item.id).subscribe((list) => {
-            console.log(list);
+
             this.incidencias = list;
             this.opened2 = true;
 
@@ -186,7 +191,6 @@ export class ListOrdenComponent implements OnInit {
             this.lat  =  orden.lat_entrega ;
             this.lng = orden.lng_entrega ;
 
-             console.log(orden);
 
             this.reload_location(this.lng, this.lat );
             this.currentItem = item;
@@ -248,6 +252,7 @@ export class ListOrdenComponent implements OnInit {
 
      public selectedEstados: { text: string; value: number };
      public selectedValorTabla: { text: string; value: number };
+     public pedido = '';
 
 
 
@@ -309,48 +314,13 @@ export class ListOrdenComponent implements OnInit {
 
         const user  = localStorage.getItem('token');
         this.decodedToken = this.jwtHelper.decodeToken(user);
+        this.escliente = localStorage.getItem('escliente');
 
+        console.log(this.escliente);
 
-
-        this.es = {
-            firstDayOfWeek: 1,
-            dayNames: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-            dayNamesShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-            dayNamesMin: [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
-            monthNames: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-            monthNamesShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-            today: 'Hoy',
-            clear: 'Borrar'
-        };
-
-
-          this.columns = [
-            {title: 'Acc', field: 'manifiesto_id' , width: '100' },
-            {title: 'CALIFICACIÓN', field: 'calificacion' , width: '120'  },
-            {title: 'AL', field: 'alerta' , width: '60'  },
-            {title: 'NANIFIESTO', field: 'alerta' , width: '120'  },
-            {title: 'F. REGISTRO', field: 'fecha_registro' , width: '120'  },
-            {title: 'F. CARGA', field: 'fecha_carga' , width: '120'  },
-            {title: 'OT', field: 'numero_ot'  ,  width: '90' },
-            {title: 'ESTADO', field: 'estado'  , width: '120'   },
-            {title: 'TIPO ENTREGA', field: 'tipoEntrega'  , width: '120'   },
-            {title: 'CLIENTE', field: 'remitente'  ,  width: '180'  },
-            {title: 'DESTINATARIO', field: 'destinatario'  ,  width: '180'  },
-            {title: 'SHIPMENT', field: 'shipment' , width: '120'  },
-            {title: 'DELIVERY', field: 'delivery'  , width: '120'  },
-            {title: 'OC', field: 'oc'  , width: '120'  },
-            {title: 'DESTINO', field: 'provincia_entrega'  , width: '130'  },
-            {title: 'F. ENTREGA', field: 'fecha_carga' , width: '120'  },
-            {title: 'CONDUCTOR', field: 'chofer', width: '220'    },
-            {title: 'TRACTO', field: 'tracto', width: '80'   },
-            {title: 'CARRETA', field: 'carreta', width: '120'  },
-            {title: 'USUARIO REGISTRO', field: 'usuario_registro', width: '120'  },
-            ];
 
 
           this.service.getClientes('', this.decodedToken.nameid ).subscribe((list) => {
-
-
 
             list.forEach((x) => {
                 this.listClientes.push ({ text: x.razon_social , value: x.id });
@@ -431,6 +401,9 @@ export class ListOrdenComponent implements OnInit {
     verfiles() {
         this.router.navigate(['/orden/files']);
     }
+    nuevo() {
+        this.router.navigate(['seguimiento/listaorden/new']);
+    }
 
     verReporte2() {
      let ids;
@@ -451,7 +424,7 @@ export class ListOrdenComponent implements OnInit {
        window.open(url);
     }
     cerrarOt(){
-        console.log(this.mySelection);
+        // console.log(this.mySelection);
     }
 
     verReporte() {
@@ -500,15 +473,12 @@ export class ListOrdenComponent implements OnInit {
         const  inicio = moment(this.dateInicio) ;
         const fin =  moment(this.dateFin);
 
-        this.loadItems();
-
-
-            if ( fin.diff(inicio, 'days') > 60) {
+        if ( fin.diff(inicio, 'days') > 60) {
 
             return ;
             }
 
-
+        this.loadItems();
 
     }
 
@@ -584,8 +554,6 @@ export class ListOrdenComponent implements OnInit {
 
 
         this.selectedClientes.forEach( (x)=> {
-
-            console.log(x.value);
              ids = ids  + ',' + x.value;
         });
 
@@ -600,10 +568,10 @@ export class ListOrdenComponent implements OnInit {
         this.model.idvalortabla = (this.selectedValorTabla === undefined ? '':  this.selectedValorTabla.value);
 
 
-
+        console.log(this.pedido);
 
         this.service.getOrdersTransports(ids,
-            this.model.idestado, this.decodedToken.nameid ,this.dateInicio,this.dateFin, this.model.idvalortabla ).subscribe((products) => {
+            this.model.idestado, this.decodedToken.nameid ,this.dateInicio,this.dateFin, this.pedido ).subscribe((products) => {
 
               this.result =  products;
 
@@ -611,11 +579,13 @@ export class ListOrdenComponent implements OnInit {
               if(this.result.length === 0)
               {
                 this.notificationService.show({
-                    content: this.notificationTemplate,
-                    position: { horizontal: 'right', vertical: 'bottom' },
-                    animation: { type: 'fade', duration: 800 },
+                    content: 'No existen resultados para la búsqueda',
+                    appendTo: this.appendTo,
+                    position: { horizontal: 'right', vertical: 'top' },
+                    animation: { type: 'slide', duration: 400 },
                     type: { style: 'warning', icon: true },
-                    hideAfter: 2000,
+                    hideAfter: 4000,
+                    closable: false,
                   });
 
               }
@@ -636,8 +606,6 @@ export class ListOrdenComponent implements OnInit {
                         data:  orderBy(this.result ,this.sort) ,
                         };
 
-
-               console.log(result);
             return result;
 
           }

@@ -14,7 +14,6 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { ReportemargenComponent } from './modules/admin/reportemargen/reportemargen.component';
 
 
@@ -55,9 +54,8 @@ const routerConfig: ExtraOptions = {
 
         DropDownsModule,
 
-        DateInputsModule,
+        DateInputsModule
 
-        ButtonsModule
     ],
     bootstrap   : [
         AppComponent

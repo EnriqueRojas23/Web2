@@ -34,6 +34,7 @@ namespace Toscanos.API.Data
         private readonly IRepository<Chofer> _repo_Chofer;
         private readonly IRepository<Proveedor> _repo_Proveedor;
         private readonly IRepository<Incidencia> _repo_Incidencia;
+        private readonly IRepository<EquipoTransporte> _repoEquipo;
         private readonly ISeguimientoReadRepository _repo_Seguimiento;
         private readonly IOrdenRepository _repository;
         private readonly IQueryHandler<ObtenerEquipoTransporteParameter> _handlerEqTransporte;
@@ -49,8 +50,9 @@ namespace Toscanos.API.Data
         ISeguimientoReadRepository repo_seguimiento,
         IOrdenRepository repository,
         IQueryHandler<ObtenerEquipoTransporteParameter> handlerEqTransporte,
-        IRepository<User> repo_User, 
-        IQueryHandler<ListarRolesPorUsuarioParameter> hanlder_RolUser)
+        IRepository<User> repo_User,
+        IQueryHandler<ListarRolesPorUsuarioParameter> hanlder_RolUser,
+        IRepository<EquipoTransporte> repoEquipo)
         {
             _context = context;
             _repo_Proveedor = repo_Proveedor;
@@ -63,6 +65,7 @@ namespace Toscanos.API.Data
             _handlerEqTransporte = handlerEqTransporte;
             _repo_User = repo_User;
             _hanlder_RolUser = hanlder_RolUser;
+            _repoEquipo = repoEquipo;
         }
         public EquipoTransporte GetEquipoTransporte(long id) => _repo_Seguimiento.GetEquipoTransporte(id);
 
@@ -71,60 +74,38 @@ namespace Toscanos.API.Data
         {
                 return await _repo_Seguimiento.GetSustentoManifiestoCerrado(manifiesto);
         }
-        public async Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(string fecha) 
+        public async Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(int? remitente_id, string fec_ini, int? tiposervicioid) 
         {
-                return await _repo_Seguimiento.getPendientesPorDia(fecha);
+                return await _repo_Seguimiento.getPendientesPorDia(remitente_id, fec_ini, tiposervicioid);
         }
 
 
 
         //
-        public async Task<long?> GetEquipoTransporte(string placa_carreta, string placa_tracto, string dni_chofer)
+        public async Task<long> GetEquipoTransporte(string placa_carreta, string placa_tracto, string dni_chofer  )
         {
-                Vehiculo objCarreta ;
-                if(placa_carreta != string.Empty){
-                    objCarreta =  _repo_Vehiculo.Get(x=>x.Placa == placa_carreta).Result;
-                     if(objCarreta == null)
-                      throw new ArgumentException( $"No Existe la placa de la carreta {placa_carreta}.");
-                }
-                 else objCarreta = new Vehiculo();
-
-                Vehiculo objTracto ;
+               Vehiculo objTracto = new Vehiculo() ;
                 if(placa_tracto != string.Empty){
-                    objTracto =  _repo_Vehiculo.Get(x=>x.Placa == placa_tracto).Result;
-                    if(objTracto == null)
-                      throw new ArgumentException($"No Existe la placa del tracto {placa_tracto}.");
-                      else{}
-                } else throw new ArgumentException("No Existe la placa del tracto");
+                    objTracto = await _repo_Vehiculo.Get(x=>x.Placa == placa_tracto.Trim());
+                     if(objTracto == null)
+                     {
+                        objTracto = new Vehiculo() ;
+                        objTracto.Placa = placa_tracto.Trim();
+                       await _repo_Vehiculo.AddAsync(objTracto);
+                     }
+                }
 
-                Chofer objChofer ;
+                Chofer objChofer  = new Chofer();
                  if(dni_chofer != string.Empty){
-                    objChofer =  _repo_Chofer.Get(x=>x.Dni == dni_chofer).Result;
-                    if(objChofer == null)
-                      throw new ArgumentException($"No Existe el DNI {dni_chofer}.");
-                    else {}
-                } else throw new ArgumentException("No Existe el DNI");
-
-
-
-                var param = new ObtenerEquipoTransporteParameter
-                {
-                    VehiculoId = objTracto.Id 
+                    objChofer = await _repo_Chofer.Get(x=>x.Dni == dni_chofer.Trim());
+                    if(objChofer == null){
+                      objChofer  = new Chofer();
+                        objChofer.Dni = dni_chofer.Trim();
+                       await _repo_Chofer.AddAsync(objChofer);
+                    }
                     
-                };
-                //Jala al ultimo chofe y eso no deberia ser asi
-                var result = (ObtenerEquipoTransporteResult)   _handlerEqTransporte.Execute(param);
-                if(result == null)
-                {
-                   return await Registrar_EquipoTransporte(objCarreta.Placa, objTracto.Placa, objChofer.Dni );
-                }
-                else
-                {
-                    return await Registrar_EquipoTransporte(objCarreta.Placa, objTracto.Placa, objChofer.Dni );
-                }
-              
-               // return result.Id;
-
+                } 
+                return await  Registrar_EquipoTransporte("", objTracto.Placa, objChofer.Dni );
         }
       
         public int? ObtenerClienteId(string razon_social)
@@ -132,7 +113,8 @@ namespace Toscanos.API.Data
             var Cliente =   _context.Cliente.Where(x=>x.razon_social == razon_social).SingleOrDefault();
             if(Cliente != null) 
                 return Cliente.id;
-            else  throw new ArgumentException( $" No existe el cliente {razon_social}.");
+            else   return -1;
+            //throw new ArgumentException( $" No existe el cliente {razon_social}.");
         }
         
         
@@ -144,7 +126,11 @@ namespace Toscanos.API.Data
             var Distrito =  _context.Distritos.Where(x=>x.distrito == distrito).FirstOrDefault();
             if(Distrito != null) 
                 return Distrito.iddistrito;
-              else  throw new ArgumentException( $" No existe el distrito {distrito}.");
+              else 
+              {
+                    return -1;
+              } 
+              //throw new ArgumentException( $" No existe el distrito {distrito}.");
         }
 
         public int? ObtenerProvinciaId(string provincia)
@@ -163,11 +149,11 @@ namespace Toscanos.API.Data
             
         }
         public async Task<IEnumerable<GetOrdenTransporte>> Listar_OrdensTransporte(string remitente_id, int? estado_id
-        , int usuario_id,string fec_ini,string fec_fin, int? tiposervicio_id) 
+        , int usuario_id,string fec_ini,string fec_fin, string pedido) 
         {
             var filtrado = new List<GetOrdenTransporte>();
 
-            var result = await _repo_Seguimiento.GetAllOrdenTransporte( remitente_id,  estado_id, usuario_id, fec_ini, fec_fin, tiposervicio_id);
+            var result = await _repo_Seguimiento.GetAllOrdenTransporte( remitente_id,  estado_id, usuario_id, fec_ini, fec_fin, pedido);
             
             var Param = new ListarRolesPorUsuarioParameter 
             {
@@ -385,13 +371,20 @@ namespace Toscanos.API.Data
               param.EstadoId = (int) Constantes.EstadoEquipoTransporte.EnProceso;
               if(carreta != null)
               param.CarretaId = carreta.Id;
+
+             var transportes = await  _repoEquipo.GetAll(x=> x.VehiculoId ==  param.VehiculoId &&
+               x.ChoferId ==  param.ChoferId  );
+
+               if(transportes.Count() > 0) {
+                     return transportes.ToList()[0].Id;
+               }
               
 
              var createdEquipoTransporte = await _repository.RegisterEquipoTransporte(param,null);
              return createdEquipoTransporte.Id;
         }
 
-        public List<Manifiesto> ObtenerEntidades_Manifiesto(List<CargaMasivaDetalle> detalles_cargados )
+        public async Task<List<Manifiesto>> ObtenerEntidades_Manifiesto(List<CargaMasivaDetalle> detalles_cargados )
         {
                 Manifiesto manifiesto ;
                 List<Manifiesto>  manifiestos = new List<Manifiesto>();
@@ -406,43 +399,30 @@ namespace Toscanos.API.Data
                     manifiesto.estiba = detalles_cargados[0].estiba;
                     manifiesto.Ordenes = new  List<OrdenTransporte>();
 
-                    var preots = vehiculo_cargado.GroupBy(x=>x.direccion_entrega.Trim()).ToList();
+                    //var preots = vehiculo_cargado.GroupBy(x=>x.direccion_entrega.Trim()).ToList();
                     var cargados = new List<OrdenTransporte>();
-                    // Manifiesto manifiesto 
+                   
                     OrdenTransporte orden;
 
                      var ordenes = new List<OrdenTransporte>();
-                     foreach (var shipments in preots)
+                     foreach (var ot in vehiculo_cargado)
                      {
-                         var ots = shipments.GroupBy(x=>x.shipment).ToList();
-                         foreach (var ot in ots)
-                         {
-                                var distrito_carga_id =   ObtenerDistritoId(ot.First().distrito_carga.Trim());
-                                var distrito_destino_servicio_id =  ObtenerDistritoId(ot.First().distrito_destino_servicio.Trim());
-                                var provincia_id =   ObtenerProvinciaId(ot.First().provincia.Trim());
+                                var distrito_carga_id =   ObtenerDistritoId(ot.distrito_carga.Trim());
 
-                                var remitente_id =   ObtenerClienteId(ot.First().remitente.Trim());
+
+                                var distrito_destino_servicio_id =  ObtenerDistritoId(ot.distrito_destino_servicio.Trim());
+                                var provincia_id =   ObtenerProvinciaId(ot.provincia.Trim());
+
+                                var remitente_id =   ObtenerClienteId(ot.remitente.Trim());
 
                                 orden = new OrdenTransporte();
-                                orden.shipment = ot.First().shipment;
-                                orden.cantidad = ot.Sum(x=>x.cantidad);
+                                orden.shipment = ot.shipment;
+                                orden.cantidad = ot.cantidad;
                                 
-                                orden.delivery = string.Empty;
-                                orden.guias = string.Empty;
+                                orden.delivery =ot.delivery;
+                                orden.guias = ot.guias;
 
-                                foreach (var item in ot)
-                                {
-                                   if(orden.delivery.Contains(item.delivery)) continue;
-                                   orden.delivery = orden.delivery +", " +  item.delivery;
-                                }
-
-                                foreach (var item in ot)
-                                {
-                                    if(orden.guias != ""){
-                                        if(orden.guias.Contains(item.guias)) continue;
-                                        orden.guias = orden.guias +", " +  item.guias;
-                                     }
-                                }
+                           
 
                                 if(orden.delivery.Length>0)
                                 orden.delivery =  orden.delivery.Substring(1, orden.delivery.Length -1 ).Trim();
@@ -453,40 +433,29 @@ namespace Toscanos.API.Data
                                 orden.remitente_id = remitente_id;
                                 orden.destinatario_id = null; // destinatario_id;
 
-                                orden.destinatario = ot.First().destinatario.Trim();
+                                orden.destinatario = ot.destinatario.Trim();
 
-                                orden.direccion_carga = ot.First().direccion_carga;
-                                orden.direccion_destino_servicio = ot.First().direccion_destino_servicio;
-                                orden.direccion_entrega = ot.First().direccion_entrega;
+                                orden.direccion_carga = ot.direccion_carga;
+                                orden.direccion_destino_servicio = ot.direccion_destino_servicio;
+                                orden.direccion_entrega = ot.direccion_entrega;
 
 
                                 orden.distrito_carga_id = distrito_carga_id;
                                 orden.distrito_destino_servicio_id = distrito_destino_servicio_id;
 
-                        
+                                orden.equipo_transporte_id = await GetEquipoTransporte(ot.carreta, ot.tracto, ot.conductor);
+                                
+                                orden.factura = ot.factura;
 
-                                orden.equipo_transporte_id = GetEquipoTransporte(ot.First().carreta, ot.First().tracto, ot.First().conductor).Result;
-
-
-                                orden.factura = ot.First().factura;
-
-                                orden.fecha_carga = ot.First().fecha_carga;
-                                orden.hora_carga = ot.First().hora_carga;
-
-
-                                orden.fecha_entrega = ot.First().fecha_entrega;
-                                orden.hora_entrega = ot.First().hora_entrega;
-
-
-                                orden.fecha_salida = ot.First().fecha_salida;
-                                orden.hora_salida = ot.First().hora_salida;
-
-                                 orden.recojo =  ot.First().recojo;
-                                                                
-
-
-                                orden.oc = ot.First().oc;
-                                orden.peso = ot.Sum(x=>x.peso)  ;
+                                orden.fecha_carga = ot.fecha_carga;
+                                orden.hora_carga = ot.hora_carga;
+                                orden.fecha_entrega = ot.fecha_entrega;
+                                orden.hora_entrega = ot.hora_entrega;
+                                orden.fecha_salida = ot.fecha_salida;
+                                orden.hora_salida = ot.hora_salida;
+                                orden.recojo =  ot.recojo;
+                                orden.oc = ot.oc;
+                                orden.peso = ot.peso;
 
                                 if( orden.equipo_transporte_id == null){
                                         orden.por_asignar = true;
@@ -494,16 +463,11 @@ namespace Toscanos.API.Data
                                 }
                                 else {
                                     orden.por_asignar = false;
-                                    orden.estado_id = (int) Constantes.EstadoOrdenTransporte.Programado;
+                                    orden.estado_id = (int) Constantes.EstadoOrdenTransporte.EnRuta;
                                 }
                                 
                                 orden.provincia_entrega = provincia_id;
-                                orden.numero_lancha  =  ot.First().tiposervicio.ToString();
-                               // String compare = "DISTRIBUCION LOCAL";
-                                
-                                // orden.tiposervicio_id = 
-                                // (ot.First().tiposervicio.ToUpper() == ("ENTREGA DIRECTA").ToString().ToUpper() ? 162: 163);
-                                
+                                orden.numero_lancha  =  ot.tiposervicio.ToString();
 
                                 if(orden.numero_lancha.Length == ("DISTRIBUCION LOCAL").Length)
                                 {
@@ -533,14 +497,14 @@ namespace Toscanos.API.Data
                                 //  orden.tiposervicio_id = 
                                 // (ot.First().tiposervicio.ToUpper() == ("ENTREGA DIRECTA").ToString().ToUpper() ? 162: 163);
                                 
-                                orden.volumen = ot.Sum(x=>x.volumen);
-                                orden.notificacion = ot.First().notificacion;
-                                orden.costo = ot.Sum(x=>x.costo);
-                                orden.valorizado =  ot.Sum(x=>x.valorizado);
+                                orden.volumen = ot.volumen;
+                                orden.notificacion = ot.notificacion;
+                                orden.costo = ot.costo;
+                                orden.valorizado =  ot.valorizado;
 
                                 manifiesto.Ordenes.Add(orden);
                                 cargados.Add(orden);   
-                            }
+                           
                         }
                     
                         manifiestos.Add(manifiesto);            
@@ -550,171 +514,103 @@ namespace Toscanos.API.Data
             
                
         }
-         public async Task<List<Manifiesto>> ObtenerEntidades_Manifiesto_autorex(List<CargaMasivaDetalle> detalles_cargados )
-        {
-                Manifiesto manifiesto ;
-                List<Manifiesto>  manifiestos = new List<Manifiesto>();
-                var primer_caso = detalles_cargados.GroupBy(x=>x.tracto).ToList();
-                OrdenTransporte orden ;
-
-                foreach (var vehiculo_cargado in primer_caso)
-                {
-                    manifiesto = new Manifiesto();
-                    manifiesto.fecha_registro = DateTime.Now;
-                    manifiesto.numero_manifiesto = "";
-                    manifiesto.usuario_id = 1;
-                    manifiesto.estiba = detalles_cargados[0].estiba;
-                    manifiesto.Ordenes = new  List<OrdenTransporte>();
-
-                    var cargados = new List<OrdenTransporte>();
-                    var getdato = vehiculo_cargado.ToList()[0];
-
-                    var equipoid  = await GetEquipoTransporte(getdato.carreta, getdato.tracto, getdato.conductor);
-                   
-                         //var ots = shipments.GroupBy(x=>x.shipment).ToList();
-                         foreach (var ot in vehiculo_cargado)
-                         {
-                                var distrito_carga_id =   ObtenerDistritoId("Lima");
-                                var distrito_destino_servicio_id =  ObtenerDistritoId("Lima");
-                                var provincia_id =   ObtenerProvinciaId(ot.provincia.Trim());
-
-                                var remitente_id =   ObtenerClienteId(ot.remitente.Trim());
-
-                                orden = new OrdenTransporte();
-                                orden.shipment = ot.shipment;
-                                orden.cantidad = ot.cantidad;
-                                
-                                orden.delivery = string.Empty;
-                                orden.guias = string.Empty;
-
-                              
-                                orden.delivery = ot.delivery ;
-                                orden.guias = ot.guias;
-
-                                orden.delivery =  orden.delivery;
-
-                                if(orden.guias != null)
-                                if(orden.guias.Length>0 )
-                                orden.guias =  orden.guias;
-
-                                orden.remitente_id = remitente_id;
-                                orden.destinatario_id = null; // destinatario_id;
-
-                                orden.destinatario = ot.destinatario.Trim();
-
-                                orden.direccion_carga = ot.direccion_carga;
-                                orden.direccion_destino_servicio = ot.direccion_destino_servicio;
-                                orden.direccion_entrega = ot.direccion_entrega;
-
-
-                                orden.distrito_carga_id = distrito_carga_id;
-                                orden.distrito_destino_servicio_id = distrito_destino_servicio_id;
-
-                        
-
-                                
-                                orden.equipo_transporte_id = equipoid;
-
-                                orden.factura = ot.factura;
-
-                                orden.fecha_carga = ot.fecha_carga;
-                                orden.hora_carga = ot.hora_carga;
-
-
-                                orden.fecha_entrega = ot.fecha_entrega;
-                                orden.hora_entrega = ot.hora_entrega;
-
-
-                                orden.fecha_salida = ot.fecha_salida;
-                                orden.hora_salida = ot.hora_salida;
-
-                                 orden.recojo =  ot.recojo;
-                                                                
-
-
-                                orden.oc = ot.oc;
-                                orden.peso = ot.peso  ;
-
-                                if( orden.equipo_transporte_id == null){
-                                        orden.por_asignar = true;
-                                        orden.estado_id = (int) Constantes.EstadoOrdenTransporte.PendienteProgramacion;
-                                }
-                                else {
-                                    orden.por_asignar = false;
-                                    orden.estado_id = (int) Constantes.EstadoOrdenTransporte.Programado;
-                                }
-                                
-                                orden.provincia_entrega = provincia_id;
-                                orden.numero_lancha  =  ot.tiposervicio.ToString();
-                               // String compare = "DISTRIBUCION LOCAL";
-                                
-                                // orden.tiposervicio_id = 
-                                // (ot.First().tiposervicio.ToUpper() == ("ENTREGA DIRECTA").ToString().ToUpper() ? 162: 163);
-                                
-
-                                if(orden.numero_lancha.Length == ("DISTRIBUCION LOCAL").Length)
-                                {
-                                     orden.tiposervicio_id = 164;
-                                }
-                                else if ( orden.numero_lancha.Length == "PROVINCIA".ToString().ToUpper().Length)
-                                {
-                                    orden.tiposervicio_id = 165;
-                                }
-                                else if ( orden.numero_lancha.Length == "ULTIMA MILLA".ToString().ToUpper().Length)
-                                {
-                                     orden.tiposervicio_id = 166;
-                                }
-                                else if ( orden.numero_lancha.Length == "AASS".ToString().ToUpper().Length)
-                                {
-                                    orden.tiposervicio_id = 169;
-                                }
-                                else if ( orden.numero_lancha.Length == "VET".ToString().ToUpper().Length)
-                                {
-                                    orden.tiposervicio_id = 170;
-                                }
-                                else
-                                { 
-                                    orden.tiposervicio_id = 164;
-                                }
-                               
-                                orden.numero_lancha = null;
-                                orden.volumen = ot.volumen;
-                                orden.notificacion = ot.notificacion;
-                                orden.costo = ot.costo;
-                                orden.valorizado =  ot.valorizado;
-
-                                manifiesto.Ordenes.Add(orden);
-                                cargados.Add(orden);   
-                            }
-                        
-                    
-                        manifiestos.Add(manifiesto);            
-                }
-                 return manifiestos;
-            
-            
-               
-        }
-        
+      
         public List<CargaMasivaDetalleForRegister> ObtenerEntidades_CargaMasiva(List<List<String>> data) 
         {
                 data = validar_fin(data);
                 var totales = new List<CargaMasivaDetalleForRegister>();
                 CargaMasivaDetalleForRegister linea ;
 
+                foreach (var item in data)
+                {
+                     if(item[0] != "SHIPMENT"){
+                        
+                         throw new ArgumentException("El formato está errado");
+
+                     }
+                       if(item[1] != "DELIVERY"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[2] != "REMITENTE"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[3] != "DESTINATARIO"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[4] != "FACTURA"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[5] != "OC"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[6] != "GUIAS"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[7] != "CANTIDAD"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                       if(item[8] != "VOLUMEN"){
+                        throw new ArgumentException("El formato está errado");
+                        
+                     }
+                     break;
+                }
+
                 foreach (var item in data.Skip(1))
                 {
                     linea =  new CargaMasivaDetalleForRegister();
                     linea.shipment = ValidarRequerido(item[0] , "Shipment" );
+
+                    if(linea.shipment == "-1") 
+                        linea.errores =   "Shipment no puede estar en blanco";
+
+
                     linea.delivery = item[1];
                     linea.remitente = ValidarRequerido(item[2], "Remitente");
+                    
+                    if(linea.remitente == "-1") 
+                       linea.errores =  linea.errores +  " - Remitente no puede estar en blanco";
+
+
+                    
+                    if(  ObtenerClienteId(linea.remitente.Trim()) == -1){
+                        linea.errores =   linea.errores +   " - No existe el cliente";
+                    }
+
                     linea.destinatario =ValidarRequerido( item[3] , "Destinatario") ;
+
+                      if(linea.destinatario == "-1") 
+                       linea.errores =   linea.errores +   " - Destinatario no puede estar en blanco";
+
+
                     linea.factura = item[4];
                     linea.oc = item[5];
                     linea.guias = item[6];
 
-                    if(item[7] != "")
-                    linea.cantidad = int.Parse(item[7]);
+
+                
+
+                    int intStr; 
+                    bool intResultTryParse = int.TryParse(item[7].ToString(), out intStr);  
+                    if (intResultTryParse == false)  
+                    {  
+                           linea.errores =   linea.errores +   " - Cantidad no es un número";
+                    }  
+                    else
+                    {
+                        if(item[7] != "")
+                        linea.cantidad = int.Parse(item[7].ToString() );
+                    }
+
+                    
+
 
                     if(item[8] != "")
                     linea.volumen = Decimal.Parse(ValidarRequerido(item[8].Trim(),"Volumen"), System.Globalization.NumberStyles.Float);
@@ -726,6 +622,11 @@ namespace Toscanos.API.Data
                     linea.tiposervicio = ValidarRequerido(item[10],"Tipo de Servicio");
 
                     linea.distrito_carga = ValidarRequerido(item[11],"Distrito de carga");
+                    
+                    if(  ObtenerDistritoId(linea.distrito_carga.Trim()) == -1){
+                        linea.errores =  linea.errores + " - No existe el distrito";
+                    }
+
                     linea.direccion_carga = ValidarRequerido(item[12], "Dirección de carga");
                     linea.fecha_carga =DateTime.FromOADate( double.Parse(ValidarRequerido(item[13],"Fecha de carga")));
                     linea.hora_carga = DateTime.FromOADate( double.Parse(ValidarRequerido(item[14],"Hora de carga"))).TimeOfDay.ToString(@"hh\:mm\:ss");
@@ -776,7 +677,8 @@ namespace Toscanos.API.Data
         {
             if(String.IsNullOrEmpty(v))
             {
-              throw new ArgumentException( $" {field} no puede estar en blanco .");
+                return "-1";
+               //throw new ArgumentException( $" {field} no puede estar en blanco .");
             }
             return v;
         }

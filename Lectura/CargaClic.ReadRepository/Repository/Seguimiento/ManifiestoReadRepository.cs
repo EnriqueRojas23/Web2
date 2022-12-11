@@ -62,13 +62,14 @@ namespace CargaClic.ReadRepository.Repository.Seguimiento
             }
         }
 
-        public async Task<IEnumerable<GetManifiestoResult>> GetAllManifiestos(string ids, int idusuario, string inicio, string fin)
+        public async Task<IEnumerable<GetManifiestoResult>> GetAllManifiestos(string ids, int idusuario, string inicio, string fin, int? tiposervicioid)
         {
              var parametros = new DynamicParameters();
              parametros.Add("remitente_id", dbType: DbType.String, direction: ParameterDirection.Input, value: ids);
              parametros.Add("usuario_id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: idusuario);
              parametros.Add("fecini", dbType: DbType.String, direction: ParameterDirection.Input, value: inicio);
              parametros.Add("fecfin", dbType: DbType.String, direction: ParameterDirection.Input, value: fin);
+             parametros.Add("tiposervicioid", dbType: DbType.Int32, direction: ParameterDirection.Input, value: tiposervicioid);
 
 
             using (IDbConnection conn = Connection)

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5DY4NB0aooIRtp6VhE0jpn6W/hyDEyvkDRzPU3+JyJttqZ109bkq2d5XMiBKhU9w5OYgbLioWftdmCgVAh7BRw==",
+  "dgSpecHash": "Fy35bThqrnnXFhRKGUAM8xUfTZz39JrTyhS72H9uAkx0AIBEOWEtWZaj0HWd8hLc7GM0wBJGTDysNbKj78mBlQ==",
   "success": true,
-  "projectFilePath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\toscanos.api\\CargaClic.API.csproj",
+  "projectFilePath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Toscanos.API\\CargaClic.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kike_\\.nuget\\packages\\automapper\\7.0.1\\automapper.7.0.1.nupkg.sha512",
     "C:\\Users\\kike_\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\5.0.1\\automapper.extensions.microsoft.dependencyinjection.5.0.1.nupkg.sha512",

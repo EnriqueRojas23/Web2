@@ -17,7 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseMasonryModule } from '@fuse/components/masonry';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
+
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
@@ -31,6 +31,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ToastModule } from 'primeng/toast';
 import { TreeModule } from 'primeng/tree';
 import { CategoriesService } from '../orden/Nortwind';
+import { UploadsModule } from '@progress/kendo-angular-upload';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 
 
 
@@ -79,7 +81,6 @@ const ordenRoutes: Route[] = [
     DropDownsModule,
     DateInputsModule,
     IntlModule,
-    ButtonsModule,
     NotificationModule,
     ExcelModule,
     PopupModule,
@@ -90,7 +91,9 @@ const ordenRoutes: Route[] = [
     TreeModule,
     TreeListModule,
     AgmDirectionModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    UploadsModule,
+    ButtonsModule
   ]
   ,
   providers: [ CategoriesService, GoogleMapsAPIWrapper ],

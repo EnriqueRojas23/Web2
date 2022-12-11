@@ -112,6 +112,11 @@ namespace CargaClic.Repository.Seguimiento
                     cargaMasivaDetalle.valorizado = item.valorizado;
                     cargaMasivaDetalle.estiba  = item.estiba;
                     cargaMasivaDetalle.owner = item.owner;
+                    if(item.errores != null)
+                    {
+                        cargaMasivaDetalle.detalleerror = item.errores; 
+                        cargaMasivaDetalle.error = true;
+                    }
 
                     cargaMasivaDetalles.Add(cargaMasivaDetalle);
                 }

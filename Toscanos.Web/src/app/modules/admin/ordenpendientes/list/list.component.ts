@@ -6,6 +6,7 @@ import { Cliente } from './../../../../core/_models/cliente';
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable @typescript-eslint/ban-types */
 import { SortDescriptor, process, GroupDescriptor, State, orderBy } from '@progress/kendo-data-query';
+import { FileRestrictions } from '@progress/kendo-angular-upload';
 
 import {  ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DataBindingDirective, DataStateChangeEvent, GridDataResult, GroupRowArgs, PageChangeEvent, PageSizeItem, SelectableSettings } from '@progress/kendo-angular-grid';
@@ -26,6 +27,7 @@ import { Incidencia } from 'app/core/_models/ordentransporte';
 import { FileModalComponent } from '../../servicelevel/modalfiles';
 import { DialogService } from 'primeng/dynamicdialog';
 import { OrdenService } from '../../orden/orden.service';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -47,6 +49,9 @@ import { OrdenService } from '../../orden/orden.service';
 
 export class ListOrdenPendComponent implements OnInit {
 
+
+
+    baseUrl = environment.baseUrl + '/api/Orden/';
     @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
 
     @ViewChild('template', { read: TemplateRef })
@@ -113,17 +118,23 @@ export class ListOrdenPendComponent implements OnInit {
     private popupRef: PopupRef;
 
     incidencias: Incidencia[] = [];
+    uploadSaveUrl = this.baseUrl +  'UploadFileConfirm2'; // should represent an actual API endpoint
+    uploadRemoveUrl = 'removeUrl'; // should represent an actual API endpoint
 
 
+    myRestrictions: FileRestrictions = {
+      allowedExtensions: ['.jpg', '.png'],
+      maxFileSize: 4194304,
+    };
 
-     public groups: GroupDescriptor[] = [{ field: 'remitente' , aggregates: this.aggregates } ,{ field: 'estado' , aggregates: this.aggregates}  ];
+
+     public groups: GroupDescriptor[] = [{ field: 'estado' , aggregates: this.aggregates}  ];
 
      public expandedKeys: Array<{ field: string; value: any }> = [
         { field: 'Category.CategoryName', value: 'Beverages' },
       ];
 
      result:  any =[];
-
      model: any = [];
 
      public format: FormatSettings = {
@@ -282,32 +293,27 @@ export class ListOrdenPendComponent implements OnInit {
 
       ActualizarEntrega(){
 
-
-
-
-
-
         this.mySelection.forEach((resp) => {
 
             this.service.confirmarEntrega(new Date(this.dateEntrega).toISOString()
             ,this.selectedTiposEntrega.value ,resp).subscribe((r) =>  {
 
+                this.loadItems();
+                this.opened2 = false;
+                this.currentItem = undefined;
+
+
+
             }, (error) =>  {
+
+                console.log(error);
 
         } , () => {
 
         });
 
       }, () => {
-        this.alert = {
-            type   : 'success',
-            message: 'Se Actualizaron las entradas de manera correcta'
-        };
 
-
-        this.showAlert = true;
-
-        this.close2('');
 
       });
     }
@@ -495,23 +501,10 @@ export class ListOrdenPendComponent implements OnInit {
 
     buscar() {
 
-
-
-
         const  inicio = moment(this.dateInicio) ;
         const fin =  moment(this.dateFin);
 
-      //  this.gridDataResult.data = [];
-
         this.loadItems();
-
-
-            if ( fin.diff(inicio, 'days') > 60) {
-
-            return ;
-            }
-
-
 
     }
 
@@ -607,12 +600,16 @@ export class ListOrdenPendComponent implements OnInit {
         this.service.getOrdersTransports(ids,
             this.model.idestado, this.decodedToken.nameid ,this.dateInicio,this.dateFin, this.model.idvalortabla ).subscribe((products) => {
 
-               products.forEach((x)=> {
-                  if(x.estado !== 'Finalizado')
-                  {
-                    this.result.push(x);
-                  }
-              });
+            //    products.forEach((x)=> {
+            //       if(x.estado !== 'Finalizado')
+            //       {
+            //         this.result.push(x);
+            //       }
+            //   });
+
+            this.result = products;
+
+            console.log(this.result);
 
 
 
@@ -663,6 +660,27 @@ export class ListOrdenPendComponent implements OnInit {
               this.expandedKeys.splice(keyIndex, 1);
             }
           }
+
+          public uploadFile  = (files) => {
+
+            if (files.length === 0) {
+
+              return ;
+            }
+
+            const fileToUpload =  files[0] as File;
+            const formData = new FormData();
+            formData.append('file', fileToUpload, fileToUpload.name);
+
+
+            this.service.uploadFileSite(formData, this.mySelection[0]).subscribe((event) => {
+
+
+
+              }, (error) => {
+
+             });
+          };
 
 
 }

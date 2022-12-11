@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kk55b9elOt2nElIDk+uAQtywpErsWbPB3uJn+uUfAwCcdMR+/8IuDRMU8GCosSS2O/nldb0ArMG5giNtBKgfZA==",
+  "dgSpecHash": "s8zlZH8Mi/RdovUbsNyUWBF67QVBIRVbFwzJ+gyBtrzPDUaXSWoxopqKSmmMlnBeNp9OyMVQ1a+HHWunl/FCDQ==",
   "success": true,
-  "projectFilePath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
+  "projectFilePath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kike_\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.5.0\\runtime.native.system.data.sqlclient.sni.4.5.0.nupkg.sha512",
     "C:\\Users\\kike_\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

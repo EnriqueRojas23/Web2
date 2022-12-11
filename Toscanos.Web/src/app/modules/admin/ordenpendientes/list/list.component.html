@@ -11,9 +11,9 @@
                         <a class="whitespace-nowrap text-primary-500">Aplicaciones</a>
                     </div>
                     <div class="flex items-center ml-1 whitespace-nowrap">
-                        <mat-icon
+                        <!-- <mat-icon
                             class="icon-size-5 text-secondary"
-                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon> -->
                         <a class="ml-1 text-primary-500">Ordenes </a>
                     </div>
                 </div>
@@ -105,13 +105,13 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 ">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                                Inicio Recojo
+                               F. Inicio
                             </label>
                             <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
                         </div>
                         <div class="w-full md:w-1/2 px-3 ">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                                Fin Recojo
+                                F. Fin
                             </label>
                             <kendo-datepicker  #picker [format]="format" [(value)]="dateFin"></kendo-datepicker>
                         </div>
@@ -119,7 +119,8 @@
                 <div class="flex flex-nowrap mx-3 ml-6 mb-6">
 
                         <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
-                        <button kendoButton (click)="cerrarOt()" [primary]="true" icon="calendar">Cerrar OT</button>
+                        <button kendoButton (click)="cerrarOt()" themeColor="secondary" size="large" icon="calendar">Confirmar Entrega</button>
+
 
                 </div>
 
@@ -133,7 +134,7 @@
                     <kendo-grid
                         [data]="gridDataResult"
 
-                        style="height: 800px; width: 1300px;"
+                        style="width: 1300px;"
                         [resizable]="true"
 
                         [pageSize]="pageSize"
@@ -185,7 +186,7 @@
                         field="remitente"  title="CLIENTE"  [width]="160" ></kendo-grid-column>
                     <kendo-grid-column  [sticky]="true"  field="destinatario"  title="DESTINATARIO"  [width]="180"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
 
-
+<!--
                     <kendo-grid-column  [sticky]="true" field="numero_manifiesto" [headerStyle]="{
                         'background-color': '#666',
                         color: '#fff',
@@ -196,9 +197,9 @@
                         {{ value }}
                         </ng-template>
 
-                    </kendo-grid-column>
+                    </kendo-grid-column> -->
 
-                    <kendo-grid-column   [sticky]="true"  field="numero_ot" title="OT"  [width]="80" [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em' }" [style]="{ 'background-color': '#888', color: '#fff' }" ></kendo-grid-column>
+                    <!-- <kendo-grid-column   [sticky]="true"  field="numero_ot" title="OT"  [width]="80" [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em' }" [style]="{ 'background-color': '#888', color: '#fff' }" ></kendo-grid-column> -->
                     <kendo-grid-column   field="shipment"  title="SHIPMENT"  [width]="90"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
                     <kendo-grid-column   field="tracto"  title="TRACTO"  [width]="80"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
                     <kendo-grid-column   field="chofer"  title="CONDUCTOR"  [width]="190"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
@@ -244,20 +245,20 @@
                 </kendo-grid-column>
 
 
-                <kendo-grid-column   field="estado"  title="ESTADO"  [width]="90"    [headerStyle]="{
+                <!-- <kendo-grid-column   field="estado"  title="ESTADO"  [width]="90"    [headerStyle]="{
                     'background-color': '#666',
                     color: '#fff',
                     'line-height': '1em'
                 }">
-                </kendo-grid-column>
+                </kendo-grid-column> -->
 
 
-                <kendo-grid-column   field="tipoEntrega"  title="TIPO ENTREGA"  [width]="90"    [headerStyle]="{
+                <!-- <kendo-grid-column   field="tipoEntrega"  title="TIPO ENTREGA"  [width]="90"    [headerStyle]="{
                     'background-color': '#666',
                     color: '#fff',
                     'line-height': '1em'
                 }">
-                </kendo-grid-column>
+                </kendo-grid-column> -->
 
 
                 <kendo-grid-column   field="orden_entrega"  title="ORDEN ENTREGA"  [width]="90"    [headerStyle]="{
@@ -294,25 +295,9 @@
                 }">
                 </kendo-grid-column>
 
-                <kendo-grid-column   field="valorizado"  title="VALORIZADO"  [width]="90"    [headerStyle]="{
-                    'background-color': '#666',
-                    color: '#fff',
-                    'line-height': '1em'
-                }">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                  S/.  {{dataItem.valorizado | number:'1.0-0'}}
-                </ng-template>
-
-                </kendo-grid-column>
 
 
 
-                <kendo-grid-column   field="delivery"  title="DELIVERY"  [width]="90"    [headerStyle]="{
-                    'background-color': '#666',
-                    color: '#fff',
-                    'line-height': '1em'
-                }">
-                </kendo-grid-column>
 
 
                         <kendo-grid-excel
@@ -358,8 +343,6 @@
                 [valueField]="'value'"
                 [(ngModel)]="selectedTiposEntrega"
                 [value]="selectedTiposEntrega"
-
-
                 [style]="{'width':'160px'}">
                 </kendo-dropdownlist>
         </div>
@@ -371,10 +354,32 @@
         </div>
         <button kendoButton (click)="ActualizarEntrega()" icon="save"> Actualizar</button>
         </div>
+
     </form>
+
+
+    <div class="w-full md:w-1/2 px-3 ">
+
+        <input type="file" #file name="image" class="btn btn-block  btn-s col-sm-8"  />
+        <button kendoButton
+          (click)="uploadFile(file.files)" >
+                  <span class="glyphicon glyphicon-upload"></span> Subir
+             </button>
+    </div>
+
 </div>
 </div>
 
 
 </kendo-dialog>
 
+
+
+
+<kendo-dialog title="Entrega de órden de transporte" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="650">
+    <!-- Mail -->
+
+
+
+
+</kendo-dialog>

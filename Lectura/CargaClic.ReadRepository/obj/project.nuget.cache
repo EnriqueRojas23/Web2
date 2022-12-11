@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aZYTLbu1bkuYddLObLpiIfSKPYu6jYTCmT7d7ShALhoDRm6vO87CpZ3bPVAtrMnPem/8kOYRxBb++CtDReqt6w==",
+  "dgSpecHash": "jkwkv6cvuZowz0LS9vb1wa0X3Gqduio0AXUy4YJB6U5FIVwcyki7p1IEG4AXyHZnk/97gds47lIodVPKAycGFA==",
   "success": true,
-  "projectFilePath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj",
+  "projectFilePath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaClic.ReadRepository\\CargaClic.ReadRepository.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kike_\\.nuget\\packages\\dapper\\1.50.5\\dapper.1.50.5.nupkg.sha512",
     "C:\\Users\\kike_\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

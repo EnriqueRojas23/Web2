@@ -1,0 +1,149 @@
+
+<div class="flex flex-col flex-auto min-w-0">
+
+    <div #appendTo class="flex flex-col sm:flex-row flex-0 sm:items-center  p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+
+
+            <div class="flex-auto w-64">
+                <h1>Elegir archivo</h1>
+                <input type="file" #file name="image" (change)="fileProgress($event)" />
+            </div>
+
+
+
+            <div class="flex-auto w-32">
+                <button
+                  kendoButton [primary]="true"
+                    size="large"  icon="upload"  [disabled]="divvisible"
+                      (click)="uploadFile(file.files)" >
+                                <kendo-loader   *ngIf="divvisible"> </kendo-loader>
+                                    <span *ngIf="!divvisible">
+                                        Subir
+                                    </span>
+                              </button>
+
+                      <button size="large" fillMode="outline" kendoButton rounded="full"   themeColor="secondary"
+                      (click)="downloadFile()"  icon="download">
+                             Plantilla
+                      </button>
+
+                      <button size="large" *ngIf="divprocesar" kendoButton [look]="'outline'" [disabled]="divprocesando"  [secondary]="true"
+                      (click)="procesar()" >
+                      <kendo-loader   *ngIf="divprocesando"> </kendo-loader>
+                             Procesar
+                      </button>
+                  </div>
+
+
+
+   </div>
+     <div #appendTo class="flex flex-col sm:flex-row flex-0 sm:items-center  p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="grow w-64">
+                <h2>Errores</h2>
+                <p> {{ errors }} </p>
+        </div>
+
+    </div>
+
+    <div #appendTo class="flex flex-col sm:flex-row flex-0 sm:items-center  p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+              <div class="grow w-64">
+
+                            <kendo-grid
+                                [data]="gridDataResult"
+
+                                style=" width: 1100px;"
+                                [resizable]="true"
+
+                                [pageSize]="pageSize"
+                                [skip]="skip"
+                                (pageChange)="pageChange($event)"
+
+                                [pageable]="true"
+                                [sortable]="{
+                                    allowUnsort: allowUnsort,
+                                    mode: 'single'
+                                }"
+                                [sort]="sort"
+                                (sortChange)="sortChange($event)"
+
+
+
+
+                                [selectable]="true"
+                                kendoGridSelectBy="id"
+                                [selectedKeys]="mySelection"
+                                [rowClass]="rowCallback"
+                                >
+
+
+
+
+                            <kendo-grid-column   [headerStyle]="{
+                                'background-color': '#666',
+                                color: '#fff',
+                                'line-height': '1em'
+                            }"
+                                field="detalleerror"  title="Error"  [width]="200" ></kendo-grid-column>
+
+
+                            <kendo-grid-column  [headerStyle]="{'background-color': '#666', color: '#fff','line-height': '1em' }" field="remitente"  title="CLIENTE"  [width]="120" ></kendo-grid-column>
+                            <kendo-grid-column   field="distrito_carga"  title="DISTRITO"  [width]="90"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+                            <kendo-grid-column   field="shipment"  title="SHIPMENT"  [width]="90"    [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
+                            <kendo-grid-column   field="tracto"  title="TRACTO"  [width]="120"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+                            <kendo-grid-column  field="destinatario"  title="DESTINATARIO"  [width]="180"    [headerStyle]="{'background-color': '#666', color: '#fff', 'line-height': '1em'}" > </kendo-grid-column>
+
+                            <kendo-grid-column field="provincia" [headerStyle]="{
+                                'background-color': '#666',
+                                color: '#fff',
+                                'line-height': '1em'
+                            }" [width]="110"
+                            title="PROVINCIA ENTREGA">
+                                <ng-template kendoGridGroupHeaderTemplate let-value="value">
+                                {{ value }}
+                                </ng-template>
+                            </kendo-grid-column>
+
+
+
+                            <kendo-grid-column
+                                    field="fecha_carga"
+                                    title="F. CARGA"
+                                    [width]="80"
+                                    [headerStyle]="{
+                                        'background-color': '#666',
+                                        color: '#fff',
+                                        'line-height': '1em'
+                                    }"
+
+
+                            >
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.fecha_carga | date: 'dd/MM/yyyy'}}
+                            </ng-template>
+                            </kendo-grid-column>
+
+                        <kendo-grid-column   field="tiposervicio"  title="TIPO SERVICIO"  [width]="90"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+
+                        <kendo-grid-column   field="oc"  title="OC"  [width]="90"    [headerStyle]="{
+                            'background-color': '#666',
+                            color: '#fff',
+                            'line-height': '1em'
+                        }">
+                        </kendo-grid-column>
+
+
+
+
+                </kendo-grid>
+
+                </div>
+                </div>
+
+</div>
+

@@ -58,10 +58,12 @@ namespace Toscanos.API.Data
 
 
       
-        public async Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id, string fec_ini,string fec_fin) 
+        public async Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id, string fec_ini, int? tiposervicioid) 
         {
-            return await _repo_Seguimiento.GetTotalDespachos(remitente_id,fec_ini, fec_fin);
+            return await _repo_Seguimiento.GetTotalDespachos(remitente_id,fec_ini, tiposervicioid);
         }
+
+
         public async Task<GetDespachosATiempo> GetDespachosATiempo(int? remitente_id, string fec_ini,string fec_fin) 
         {
             return await _repo_Seguimiento.GetDespachosATiempo(remitente_id,fec_ini, fec_fin);

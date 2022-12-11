@@ -36,6 +36,14 @@ namespace CargaClic.Domain.Seguimiento
         public string fluvial_numerodoc {get;set;}
 
 
+        public bool? costotercero_facturado {get;set;}
+        public bool? otrosgastos_facturado {get;set;}
+
+        public string costotercero_numerodoc {get;set;}
+        public string otrosgastos_numerodoc {get;set;}
+        
+        public DateTime? costotercero_fecha {get;set;}
+        public DateTime? otrosgastos_fecha {get;set;}
 
 
     }

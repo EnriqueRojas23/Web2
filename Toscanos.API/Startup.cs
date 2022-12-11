@@ -144,6 +144,7 @@ namespace CargaClic.API
             services.AddScoped<IRepository<Propietario>,Repository<Propietario>>();
             services.AddScoped<IRepository<OrdenTransporte>,Repository<OrdenTransporte>>();
             services.AddScoped<IRepository<CargaMasivaDetalle>,Repository<CargaMasivaDetalle>>();
+            services.AddScoped<IRepository<EquipoTransporte>,Repository<EquipoTransporte>>();
             
             
 

@@ -61,6 +61,38 @@ export class OrdenService extends BehaviorSubject<any[]>
         super([]);
     }
 
+    uploadFile(formData: FormData, UserId: number): any {
+        return this._httpClient.post(this.baseUrl + 'UploadFile?usrid=' + UserId.toString()
+       , formData
+       , httpOptionsUpload
+     );
+    }
+    procesarMasivo(id: any): any {
+        const model = { id: id , usuarioid : 2};
+        return this._httpClient.post(this.baseUrl +  'procesarCargaMasiva', model , httpOptions );
+    }
+    downloadPlantilla(): any {
+
+        this._httpClient.get(this.baseUrl + 'DownloadPlantilla', {headers, responseType: 'blob' as 'json'}).subscribe(
+             (response: any) => {
+                 const dataType = response.type;
+                 const binaryData = [];
+                 binaryData.push(response);
+                 const downloadLink = document.createElement('a');
+                 downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+                 window.open(downloadLink.href);
+             }
+           );
+           }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    uploadFileSite(formData: FormData, ordenid: number) {
+
+            return this._httpClient.post(this.baseUrl + 'UploadFileConfirm2?id=' + ordenid
+            , formData
+            , httpOptionsUpload
+             );
+           }
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
@@ -221,12 +253,7 @@ export class OrdenService extends BehaviorSubject<any[]>
                 fechaetapa,
                 idmaestroetapa,
                 idordentrabajo
-             }).pipe(
-                tap((response) => {
-                    // Update the notes
-                   // this.getManifiestos('', null,null).subscribe();
-                })
-             );
+             });
 
          }
 
@@ -318,16 +345,41 @@ export class OrdenService extends BehaviorSubject<any[]>
             })
         );
     }
-    GetCantidadDespacho(fecha: Date): Observable<any> {
+    GetCantidadDespacho(fecha: Date, tiposervicioid: string,remitenteid: string ): Observable<any> {
+
+        if(tiposervicioid === undefined)
+        {
+            tiposervicioid = '';
+        }
+        if(remitenteid === undefined)
+        {
+            remitenteid = '';
+        }
+
+
         const param = '?fec_ini=' + fecha.toLocaleDateString() +
-           '&fec_fin=' + fecha.toLocaleDateString()  +  '&remitente_id=' ;
+           '&tiposervicioid=' +  tiposervicioid +  '&remitente_id=' + remitenteid ;
 
         return this._httpClient.get<any>(this.baseUrl + 'GetCantidadDespacho' + param  , httpOptions);
     }
 
 
-    getPendientesPorDia(fecha: Date): Observable<OrdenTransporte[]> {
-        const param = '?fecha=' + fecha.toLocaleDateString() ;
+    getPendientesPorDia(fecha: Date, tiposervicioid: string,remitenteid: string): Observable<OrdenTransporte[]> {
+
+        if(tiposervicioid === undefined)
+        {
+            tiposervicioid = '';
+        }
+        if(remitenteid === undefined)
+        {
+            remitenteid = '';
+        }
+
+
+        const param = '?fec_ini=' + fecha.toLocaleDateString() +
+           '&tiposervicioid=' +  tiposervicioid +  '&remitente_id=' + remitenteid ;
+
+
         return this._httpClient.get<OrdenTransporte[]>(this.baseUrl + 'getPendientesPorDia' + param  , httpOptions);
     }
 
@@ -339,7 +391,7 @@ export class OrdenService extends BehaviorSubject<any[]>
 
 
     getOrdersTransports(selectedCliente: string, selectedEstado: string, usuario_id: number
-        , fec_ini: Date, fec_fin: Date , selectedTipoServicio: string): Observable<OrdenTransporte[]> {
+        , fec_ini: Date, fec_fin: Date , pedido: string): Observable<OrdenTransporte[]> {
 
             if(selectedCliente == null)
             {
@@ -349,16 +401,16 @@ export class OrdenService extends BehaviorSubject<any[]>
             {
                 selectedEstado = '';
             }
-            if(selectedTipoServicio == null)
+            if(pedido == null)
             {
-                selectedTipoServicio = '';
+                pedido = '';
             }
 
         const param = '?remitente_id=' + selectedCliente + '&estado_id=' + selectedEstado
         + '&usuario_id=' + usuario_id
         + '&fec_ini=' + fec_ini.toLocaleDateString()
         + '&fec_fin=' + fec_fin.toLocaleDateString()
-        +  '&tiposervicio_id=' +  selectedTipoServicio;
+        +  '&pedido=' +  pedido;
 
 
         return this._httpClient.get<OrdenTransporte[]>(this.baseUrl + 'GetAllOrder' + param  , httpOptions);

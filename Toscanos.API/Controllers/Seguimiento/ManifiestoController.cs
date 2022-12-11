@@ -40,12 +40,13 @@ namespace Toscanos.API.Controllers.Seguimiento
 
 
         [HttpGet("GetAllManifiestos")]
-        public async Task<IActionResult> GetAllManifiestos(string ids, int idusuario, string inicio, string fin)
+        public async Task<IActionResult> GetAllManifiestos(string ids, int idusuario, string inicio, string fin
+        , int? idtiposervicio = 0)
         {
             if(ids != null)
               ids = ids.Substring(1, ids.Length -1);
-              
-            var result = await _repo.GetAllManifiestos(ids, idusuario, inicio, fin);
+            
+            var result = await _repo.GetAllManifiestos(ids, idusuario, inicio, fin, idtiposervicio);
             return Ok(result);
         }
         [HttpGet("GetManifiesto")]
@@ -94,6 +95,9 @@ namespace Toscanos.API.Controllers.Seguimiento
                         centroCostoDto.oriental_fecha = centroCosto.oriental_facturado==true? centroCosto.oriental_fecha: DateTime.Now;
                         centroCostoDto.fluvial_fecha = centroCosto.fluvial_facturado==true? centroCosto.fluvial_fecha: DateTime.Now;
 
+                        centroCostoDto.costotercero_fecha = centroCosto.costotercero_facturado==true? centroCosto.costotercero_fecha: DateTime.Now;
+                        centroCostoDto.otrosgastos_fecha = centroCosto.otrosgastos_facturado==true? centroCosto.otrosgastos_fecha: DateTime.Now;
+
 
                   
                         centroCostoDto.estiba = manifiesto.estiba;
@@ -102,6 +106,8 @@ namespace Toscanos.API.Controllers.Seguimiento
                         centroCostoDto.bejaranoiquitos =  manifiesto.bejaranoiquitos;
                         centroCostoDto.oriental = manifiesto.oriental;
                         centroCostoDto.fluvial = manifiesto.fluvial;
+                        centroCostoDto.costotercero = manifiesto.costotercero;
+                        centroCostoDto.otrosgastos = manifiesto.otrosgastos;
 
 
                         centroCostoDto.estiba_facturado = centroCosto.estiba_facturado;
@@ -110,6 +116,9 @@ namespace Toscanos.API.Controllers.Seguimiento
                         centroCostoDto.bejarano_iquitos_facturado = centroCosto.bejarano_iquitos_facturado;
                         centroCostoDto.oriental_facturado = centroCosto.oriental_facturado;
                         centroCostoDto.fluvial_facturado = centroCosto.fluvial_facturado;
+                        centroCostoDto.costotercero_facturado = centroCosto.costotercero_facturado;
+                        centroCostoDto.otrosgastos_facturado = centroCosto.otrosgastos_facturado;
+                        
                         
 
                         centroCostoDto.estiba_numerodoc = centroCosto.estiba_numerodoc;
@@ -118,6 +127,8 @@ namespace Toscanos.API.Controllers.Seguimiento
                         centroCostoDto.bejarano_iquitos_numerodoc = centroCosto.bejarano_iquitos_numerodoc;
                         centroCostoDto.oriental_numerodoc = centroCosto.oriental_numerodoc;
                         centroCostoDto.fluvial_numerodoc = centroCosto.fluvial_numerodoc;
+                        centroCostoDto.costotercero_numerodoc = centroCosto.costotercero_numerodoc;
+                        centroCostoDto.otrosgastos_numerodoc = centroCosto.otrosgastos_numerodoc;
 
 
                         
@@ -153,15 +164,15 @@ namespace Toscanos.API.Controllers.Seguimiento
              var _manifiesto = await  _repoManifiesto.Get(x => x.id == manifiestoForUpdate.id);
             
             _manifiesto.valorizado = manifiestoForUpdate.valorizado;
-            // _manifiesto.valorizadoFluvial = manifiestoForUpdate.valorizadoFluvial;
-            // _manifiesto.bejaranoiquitos = manifiestoForUpdate.bejaranoiquitos;
-            // _manifiesto.bejaranopucallpa = manifiestoForUpdate.bejaranopucallpa;
+            _manifiesto.valorizadoFluvial = manifiestoForUpdate.valorizadoFluvial;
+            _manifiesto.bejaranoiquitos = manifiestoForUpdate.bejaranoiquitos;
+            _manifiesto.bejaranopucallpa = manifiestoForUpdate.bejaranopucallpa;
             _manifiesto.costotercero = manifiestoForUpdate.costotercero;
-            // _manifiesto.deestiba  = manifiestoForUpdate.deestiba;
-            // _manifiesto.estiba = manifiestoForUpdate.estiba;
-            // _manifiesto.estiba_adicional = manifiestoForUpdate.estiba_adicional;
-            // _manifiesto.fluvial = manifiestoForUpdate.fluvial;
-            // _manifiesto.oriental = manifiestoForUpdate.oriental;
+            _manifiesto.deestiba  = manifiestoForUpdate.deestiba;
+            _manifiesto.estiba = manifiestoForUpdate.estiba;
+            _manifiesto.estiba_adicional = manifiestoForUpdate.estiba_adicional;
+            _manifiesto.fluvial = manifiestoForUpdate.fluvial;
+            _manifiesto.oriental = manifiestoForUpdate.oriental;
             _manifiesto.otrosgastos = manifiestoForUpdate.otrosgastos;
             _manifiesto.retorno_tarifa = manifiestoForUpdate.retorno_tarifa;
             _manifiesto.sobreestadia_tarifa = manifiestoForUpdate.sobreestadia_tarifa;
@@ -338,7 +349,6 @@ namespace Toscanos.API.Controllers.Seguimiento
 
 
                 //  Oriental
-
              if(manifiestoForUpdate.oriental_fecha == null) { 
                 
                 centroCosto.oriental_facturado= false;
@@ -353,18 +363,41 @@ namespace Toscanos.API.Controllers.Seguimiento
                 centroCosto.oriental_numerodoc = manifiestoForUpdate.oriental_numerodoc;
                 manifiesto.oriental = manifiestoForUpdate.oriental;
                 centroCosto.oriental_facturado = true;
-                
             }
 
+            
+             //  Costo tercero
+             if(manifiestoForUpdate.costotercero == null || manifiestoForUpdate.costotercero == 0) { 
+                centroCosto.costotercero_facturado= false;
+                centroCosto.costotercero_numerodoc = null;
+                centroCosto.costotercero_fecha = null ;
+                manifiesto.costotercero = null;
+              } 
+            else {
+                centroCosto.costotercero_fecha = DateTime.ParseExact(manifiestoForUpdate.costotercero_fecha,"dd/MM/yyyy", cultureInfo) ;
+                centroCosto.costotercero_numerodoc = manifiestoForUpdate.costotercero_numerodoc;
+                manifiesto.costotercero = manifiestoForUpdate.costotercero;
+                centroCosto.costotercero_facturado = true;
+              }
 
 
-        
+             //  Otros gastos
+             if(manifiestoForUpdate.otrosgastos  == null  || manifiestoForUpdate.otrosgastos  == 0) { 
+                centroCosto.otrosgastos_facturado= false;
+                centroCosto.otrosgastos_numerodoc = null;
+                centroCosto.otrosgastos_fecha = null ;
+                manifiesto.otrosgastos = null;
+              } 
+            else {
+                centroCosto.otrosgastos_fecha = DateTime.ParseExact(manifiestoForUpdate.otrosgastos_fecha,"dd/MM/yyyy", cultureInfo) ;
+                centroCosto.otrosgastos_numerodoc = manifiestoForUpdate.otrosgastos_numerodoc;
+                manifiesto.otrosgastos = manifiestoForUpdate.otrosgastos;
+                centroCosto.otrosgastos_facturado = true;
+            }
 
 
           
             var result = await _repoCentroCosto.SaveAll();
-
-
             return Ok(result);
         }
 

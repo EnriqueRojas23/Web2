@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lyrxrW8m9GUO1rMiQ0mc69rYzoal0u5S70nadvpyr6Y=",
+  "Hash": "hMZ4MaZFZh8ER7TPEtoKVmna9CAc7BlKEOTEM38VnOA=",
   "Source": "CargaClic.API",
   "BasePath": "_content/CargaClic.API",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "CargaClic.API\\wwwroot",
       "Source": "CargaClic.API",
-      "ContentRoot": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Toscanos.API\\wwwroot\\",
+      "ContentRoot": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Toscanos.API\\wwwroot\\",
       "BasePath": "_content/CargaClic.API",
       "Pattern": "**"
     }

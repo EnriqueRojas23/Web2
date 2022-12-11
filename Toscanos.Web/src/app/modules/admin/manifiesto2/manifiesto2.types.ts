@@ -51,6 +51,9 @@ export interface Manifiesto
 
 
 
+
+
+
 }
 
 export interface Geo {

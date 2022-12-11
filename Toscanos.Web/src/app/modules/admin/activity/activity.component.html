@@ -32,6 +32,28 @@
           <div class="main-content mb-10 container-fluid">
 
             <div class="flex">
+                <div class="w-full md:w-1/2">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listcliente">
+                        Cliente
+                    </label>
+                        <kendo-dropdownlist name="listcliente" id="listcliente" [data]="clientes"
+                                scrollHeight="40vh" style="width: 250px;"
+
+                                [(ngModel)]="selectedClientes"
+                                [textField]="'text'"
+                                [valueField]="'value'"
+                                [value]="selectedClientes"
+                                (filterChange)="handleFilter($event)"
+                                [filterable]="true"
+
+                                [popupSettings]="{
+                                    width: 250,
+                                    height: 50
+                                }"
+
+                                filter="true">
+                        </kendo-dropdownlist>
+                </div>
 
                     <div class="w-full md:w-1/2 px-3 ">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -40,9 +62,30 @@
                         <kendo-datepicker  #picker [format]="format" [(value)]="dateInicio"></kendo-datepicker>
 
 
-                    <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
-                    </div>
 
+                    </div>
+                    <div class="w-full md:w-1/2 px-3 ">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="listvalortabla">
+                            Tipo Servicio
+                        </label>
+                        <kendo-dropdownlist name="listvalortabla" id="listvalortabla" [data]="listValorTabla"
+                        [textField]="'text'"
+                        [defaultItem]="defaultItem"
+
+                        [(ngModel)]="selectedValorTabla"
+                        [value]="selectedValorTabla"
+
+
+                        [valueField]="'value'"
+                        [style]="{'width':'160px'}">
+                        </kendo-dropdownlist>
+
+
+            </div>
+            <div class="w-full md:w-1/2 px-3 mt-5">
+
+                    <button kendoButton (click)="buscar()" icon="search"> Buscar</button>
+            </div>
            </div>
 
            <div class="flex">
@@ -135,7 +178,7 @@
             <kendo-grid
             [data]="gridDataResult"
 
-            style="height: 600px; width: 1100px;"
+            style=" width: 1100px;"
             [resizable]="true"
 
             [pageSize]="pageSize"
@@ -183,7 +226,7 @@
 
             </kendo-grid-column>
             <kendo-grid-column   [sticky]="true"  field="entregados" title="ENTREGADOS"  [width]="80" ></kendo-grid-column>
-        <kendo-grid-column   [sticky]="true"  field="entregadosOK" title="APROBADO"  [width]="80"  [style]="{'opacity': '0.6', 'background-color': '#229954', 'color': '#fff' }" ></kendo-grid-column>
+            <kendo-grid-column   [sticky]="true"  field="entregadosOK" title="APROBADO"  [width]="80"  [style]="{'opacity': '0.6', 'background-color': '#229954', 'color': '#fff' }" ></kendo-grid-column>
             <kendo-grid-column   [sticky]="true"  field="entregadosParcial" title="PARCIAL"  [width]="80"  [style]="{ 'opacity': '0.6', 'background-color': '#E7E117', 'color': '#fff' }" ></kendo-grid-column>
             <kendo-grid-column   [sticky]="true"  field="entregadosRechazo" title="RECHAZADO"  [width]="80"  [style]="{'opacity': '0.6',  'background-color': '#E72317', 'color': '#fff' }" ></kendo-grid-column>
 
@@ -206,7 +249,6 @@
 
             <kendo-grid-column   field="total"  title="TOTAL"  [width]="90"
                [headerStyle]="{ 'background-color': '#666', color: '#fff', 'line-height': '1em'}">  </kendo-grid-column>
-
             </kendo-grid>
 
             </div>

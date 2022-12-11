@@ -12,7 +12,7 @@ namespace CargaClic.Data.Mappings.Mantenimiento
             builder.HasKey(x=>x.Id);
             builder.Property(x=>x.NombreCompleto).HasMaxLength(50).IsRequired();
             builder.Property(x=>x.Dni).HasMaxLength(11).IsRequired();
-            builder.Property(x=>x.Brevete).HasMaxLength(11).IsRequired();
+            // builder.Property(x=>x.Brevete).HasMaxLength(11).IsRequired();
             
             
 

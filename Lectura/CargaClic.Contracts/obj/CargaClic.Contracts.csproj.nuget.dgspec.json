@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj": {}
+    "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj": {}
   },
   "projects": {
-    "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj": {
+    "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj",
+        "projectUniqueName": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj",
+        "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj",
         "packagesPath": "C:\\Users\\kike_\\.nuget\\packages\\",
-        "outputPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\obj\\",
+        "outputPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
@@ -69,14 +69,14 @@
         }
       }
     },
-    "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj": {
+    "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
+        "projectUniqueName": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
         "projectName": "CargaClic.Contracts",
-        "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
+        "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\CargaClic.Contracts.csproj",
         "packagesPath": "C:\\Users\\kike_\\.nuget\\packages\\",
-        "outputPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Lectura\\CargaCLic.Contracts\\obj\\",
+        "outputPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Lectura\\CargaCLic.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
@@ -98,8 +98,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj": {
-                "projectPath": "D:\\RIA\\Aplicaciones\\Toscanos\\Web2\\Common\\Common.csproj"
+              "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj": {
+                "projectPath": "D:\\RIA\\Aplicaciones\\TWH\\Web2\\Common\\Common.csproj"
               }
             }
           }

@@ -39,7 +39,7 @@ namespace CargaClic.Repository.Contracts.Seguimiento
             public decimal? valorizado {get;set;}
            public decimal? estiba {get;set;}
            public string owner {get;set;}
-
+            public string errores {get;set;}
            public string numero_remesa {get;set;}
             
     }

@@ -48,27 +48,34 @@ export class CentroCostoComponent implements OnInit {
   ngOnInit(): void {
 
 
-            // Request the data from the server
-            this._manifiestosService.getCentroCostoById(this.config.data.manifiesto.id).subscribe();
-
-
-
-            // Get the manifiesto
-            this.manifiesto$ = this._manifiestosService.manifiesto$;
-
-
-           // Subscribe to note updates
-           this.manifiestoChanged
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                debounceTime(500),
-                switchMap(manifiesto => this._manifiestosService.updateCentroCosto(manifiesto)))
-            .subscribe(() => {
-
-                // Mark for check
+            if(this.config.data.manifiesto.length  > 1 )
+            {
+                console.log(this.config.data.manifiesto, 'somos muchos');
                 this._changeDetectorRef.markForCheck();
-            });
+            }
+            else
+            {
+                // Request the data from the server
+                this._manifiestosService.getCentroCostoById(this.config.data.manifiesto.id).subscribe();
 
+
+
+                // Get the manifiesto
+                this.manifiesto$ = this._manifiestosService.manifiesto$;
+
+
+            // Subscribe to note updates
+            this.manifiestoChanged
+                .pipe(
+                    takeUntil(this._unsubscribeAll),
+                    debounceTime(500),
+                    switchMap(manifiesto => this._manifiestosService.updateCentroCosto(manifiesto)))
+                .subscribe(() => {
+
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            }
 
 
 

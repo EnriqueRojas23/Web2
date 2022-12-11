@@ -17,6 +17,8 @@ namespace CargaClic.API.Dtos.Matenimiento
         public decimal? bejaranoiquitos {get;set;}
         public decimal? oriental {get;set;}
         public decimal? fluvial {get;set;}
+        public decimal? costotercero {get;set;}
+        public decimal? otrosgastos {get;set;}
 
         
         public bool? estibaadicional_facturado {get;set;}
@@ -41,6 +43,15 @@ namespace CargaClic.API.Dtos.Matenimiento
         public bool? fluvial_facturado {get;set;}
         public string fluvial_fecha {get;set;}
         public string fluvial_numerodoc {get;set;}
+
+        public bool? costotercero_facturado {get;set;}
+        public bool? otrosgastos_facturado {get;set;}
+
+        public string costotercero_numerodoc {get;set;}
+        public string otrosgastos_numerodoc {get;set;}
+        
+        public string costotercero_fecha {get;set;}
+        public string otrosgastos_fecha {get;set;}
 
 
 

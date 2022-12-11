@@ -9,7 +9,7 @@ import { FuseMasonryModule } from '@fuse/components/masonry';
 import { SharedModule } from 'app/shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -39,7 +39,11 @@ import { NotificationModule } from '@progress/kendo-angular-notification';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { TreeListModule } from '@progress/kendo-angular-treelist';
-
+import { NewComponent } from './new/new.component';
+import { ProgressBarModule } from '@progress/kendo-angular-progressbar';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
+import { UploadsModule } from '@progress/kendo-angular-upload';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 
 
 const ordenRoutes: Route[] = [
@@ -61,6 +65,10 @@ const ordenRoutes: Route[] = [
                 path     : 'files',
                 component: FilesComponent
 
+            },
+            {
+                path     : 'new',
+                component: NewComponent
             }
         ]
     }
@@ -71,7 +79,8 @@ const ordenRoutes: Route[] = [
         OrdenComponent,
         ListOrdenComponent,
         RoutingComponent,
-        FilesComponent
+        FilesComponent,
+        NewComponent
     ],
     imports     : [
         RouterModule.forChild(ordenRoutes),
@@ -79,7 +88,6 @@ const ordenRoutes: Route[] = [
         FormsModule,
 
         ReactiveFormsModule,
-        MatButtonModule,
         MatCheckboxModule,
         MatDialogModule,
         MatFormFieldModule,
@@ -103,13 +111,15 @@ const ordenRoutes: Route[] = [
         ExcelModule,
         PopupModule,
         DialogModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyDnh35oUHQYGDPcVs6rfKOY057Xo7ujDsQ'
-          }),
         TreeModule,
         TreeListModule,
         AgmDirectionModule,
         GoogleMapsModule,
+        ProgressBarModule,
+        IndicatorsModule,
+        UploadsModule,
+        InputsModule
+
 
 
     ]

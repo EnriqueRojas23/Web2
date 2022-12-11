@@ -26,6 +26,8 @@ export class ActivityComponent implements OnInit {
     model: any = [];
     data: any = [];
     dateInicio: Date = new Date(Date.now()) ;
+    public listValorTabla: Array<{ text: string; value: number }> = [];
+    public selectedValorTabla: { text: string; value: number };
     data2: any = [];
 
 
@@ -121,6 +123,7 @@ export class ActivityComponent implements OnInit {
 
 
   constructor(public ordenServicio: OrdenService,
+    private service: OrdenService,
     private intl: IntlService
     ) {
         this.labelContent = this.labelContent.bind(this);
@@ -165,7 +168,7 @@ export class ActivityComponent implements OnInit {
 
 
 
-    this.ordenServicio.GetCantidadDespacho(this.dateInicio).subscribe((resp) => {
+    this.ordenServicio.GetCantidadDespacho(this.dateInicio, this.selectedValorTabla?.value.toString(), this.selectedClientes?.value.toString() ).subscribe((resp) => {
 
 
         const oldArray2 = this.datoschart2;
@@ -179,7 +182,7 @@ export class ActivityComponent implements OnInit {
     });
 
 
-    this.ordenServicio.getPendientesPorDia(this.dateInicio).subscribe((products) => {
+    this.ordenServicio.getPendientesPorDia(this.dateInicio, this.selectedValorTabla?.value.toString(), this.selectedClientes?.value.toString()).subscribe((products) => {
 
 
        products.forEach( (x) => {
@@ -222,12 +225,25 @@ public sortChange(sort: SortDescriptor[]): void {
     //this.reloadItems();
   }
 
+
+
 public pageChange({ skip, take }: PageChangeEvent): void {
     this.skip = skip;
     this.pageSize = take;
     //this.reloadItems();
   }
   ngOnInit(): void {
+
+
+    this.service.getValoresTabla(22).subscribe((list3) => {
+
+        list3.forEach((x) => {
+            this.listValorTabla.push ({ text: x.valorPrincipal , value: x.id });
+        });
+       // this.loadItems();
+
+    });
+
 
 
     const user  = localStorage.getItem('token');

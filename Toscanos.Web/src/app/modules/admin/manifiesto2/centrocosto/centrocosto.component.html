@@ -235,8 +235,69 @@
 
     </div>
 
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.costotercero_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Costo Tercero
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.costotercero_facturado" #picker [format]="format" [(value)]="manifiesto.costotercero_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Tercero
+                     </label>
+                       <input type="text" name="costotercerodocumento"  [(ngModel)]="manifiesto.costotercero_numerodoc" [disabled]="!manifiesto.costotercero_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Costo Tercero
+                     </label>
+                       <input type="text" name="costotercero"  [(ngModel)]="manifiesto.costotercero" [disabled]="!manifiesto.costotercero_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Fluvial(-)" required>
+                </div>
 
 
+    </div>
+
+    <div class="flex flex-nowrap mx-2 mb-6">
+        <kendo-label
+        class="k-checkbox-label"
+        [for]="notification"
+        text=""
+      ></kendo-label>
+      <input type="checkbox"
+           [(ngModel)]="manifiesto.otrosgastos_facturado" #notification
+           kendoCheckBox />
+
+                <div class="w-full md:w-1/2 px-3 ">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                       Facturación Otros Gastos
+                    </label>
+                    <kendo-datepicker  [disabled]="!manifiesto.otrosgastos_facturado" #picker [format]="format" [(value)]="manifiesto.otrosgastos_fecha"></kendo-datepicker>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Documento Otros Gastos
+                     </label>
+                       <input type="text" name="otrosgastosdocumento"  [(ngModel)]="manifiesto.otrosgastos_numerodoc" [disabled]="!manifiesto.otrosgastos_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Número de Documento" required>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                        Otros gastos
+                     </label>
+                       <input type="text" name="otrosgastos"  [(ngModel)]="manifiesto.otrosgastos" [disabled]="!manifiesto.otrosgastos_facturado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo Fluvial(-)" required>
+                </div>
+
+
+    </div>
 
 
 

@@ -1,0 +1,22 @@
+.notification-container {
+    width: 100%;
+    height: 380px;
+    border: 1px solid #ddd;
+    margin-bottom: 125px;
+  }
+
+  .append-container {
+    position: relative;
+    width: 400px;
+    border: 1px solid #ccc;
+    height: 250px;
+    margin-bottom: 15px;
+  }
+
+
+  tr.gold {
+    background-color: #ffba80;
+  }
+  tr.green {
+    background-color: #b2f699 !important;
+  }

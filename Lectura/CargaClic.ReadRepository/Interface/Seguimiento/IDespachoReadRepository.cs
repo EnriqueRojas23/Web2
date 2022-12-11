@@ -8,7 +8,7 @@ namespace CargaClic.ReadRepository.Interface.Seguimiento
     public interface ISeguimientoReadRepository
     {
          Task<IEnumerable<GetOrdenTransporte>> GetAllOrdenTransporte(string remitente_id, int? estado_id, int usuario_id
-         , string fec_ini, string fec_fin, int? tiposervicio_id);
+         , string fec_ini, string fec_fin, string pedido);
 
          Task<IEnumerable<GetOrdenTransporte>> GetAllOrdenTransporte(long manifiestoId);
          Task<IEnumerable<GetOrdenTransporte>> SearchOrdenTransporte(string criterio, int dias);
@@ -26,12 +26,12 @@ namespace CargaClic.ReadRepository.Interface.Seguimiento
          Task<IEnumerable<GetLocalizacionResult>> GetLiveView();
          EquipoTransporte GetEquipoTransporte(long id);
 
-         Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id,string fec_ini, string fec_fin);
+         Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id, string fec_ini, int? tiposervicioid);
          Task<GetDespachosATiempo> GetDespachosATiempo(int? remitente_id,string fec_ini, string fec_fin);
 
          Task<IEnumerable<ReporteEncuestaResult>> GetReporteEncuesta(int? remitente_id, int? usuario_id,string fec_ini, string fec_fin);
          Task<IEnumerable<GetSustentoManifiesto>> GetSustentoManifiestoCerrado(string manifiesto);
-         Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(string fecha);
+         Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(int? remitente_id, string fec_ini, int? tiposervicioid);
 
 
          Task<IEnumerable<GetDespachosTiempoEntrega>> GetDespachosTiempoEntrega(int? remitente_id,string fec_ini, string fec_fin);

@@ -51,26 +51,31 @@ export interface Manifiesto
     retorno_facturado?: boolean;
     sobreestadia_facturado?: boolean;
     estiba_facturado?: boolean;
-
+    costotercero_facturado?: boolean;
+    otrosgastos_facturado?: boolean;
 
     fecha_facturado?: Date;
     fecha_adicional_facturado?: Date;
     fecha_sobreestadia_facturado?: Date;
     fecha_retorno_facturado?: Date;
-
     estiba_fecha?: Date;
     estibaadicional_fecha?: Date;
     bejarano_pucallpa_fecha?: Date;
     bejarano_iquitos_fecha?: Date;
     oriental_fecha?: Date;
     fluvial_fecha?: Date;
-
+    costotercero_fecha?: Date;
+    otrosgastos_fecha?: Date;
 
     numServicio?: string;
     numAdicional?: string;
     numSobreestadia?: string;
     numRetorno?: string;
     estiba_numerodoc?: string;
+    otrosgastos_numerodoc?: string;
+    costotercero_numerodoc?: string;
+
+    costotercero?: number;
 
 }
 

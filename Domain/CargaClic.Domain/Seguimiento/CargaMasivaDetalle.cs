@@ -65,6 +65,8 @@ namespace CargaClic.Domain.Seguimiento
 
              public string oc { get; set; }
              public string owner {get;set;}
+             public bool error {get;set;}
+             public string detalleerror {get;set;}
 
     }
 }

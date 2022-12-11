@@ -142,12 +142,20 @@ export class ManifiestoService
     /**
      * Get notes
      */
-   getManifiestos(selectedCliente: string, fec_ini: Date, fec_fin: Date,  idusuario: number = 1): Observable<Manifiesto[]>   {
+   getManifiestos(selectedCliente: string, fec_ini: Date, fec_fin: Date,  idusuario: number = 1
+    , idtiposervicio = null): Observable<Manifiesto[]>   {
+
+        let tipo = '';
+        if(idtiposervicio !== null)
+        {
+            tipo = idtiposervicio;
+        }
 
 
        const params = 'ids=' + selectedCliente
        + '&idusuario=' + idusuario.toString()
-       + '&inicio=' + fec_ini.toLocaleDateString() + '&fin=' +  fec_fin.toLocaleDateString();
+       + '&inicio=' + fec_ini.toLocaleDateString() + '&fin=' +  fec_fin.toLocaleDateString()
+       + '&idtiposervicio=' +  tipo ;
 
        return this._httpClient.get<Manifiesto[]>(this.baseUrl + 'GetAllManifiestos?' + params , httpOptions).pipe(
            tap((response: Manifiesto[]) => {
@@ -199,6 +207,8 @@ export class ManifiestoService
                 response.bejarano_iquitos_fecha = new Date(response.bejarano_iquitos_fecha) ;
                 response.oriental_fecha = new Date(response.oriental_fecha) ;
                 response.fluvial_fecha = new Date(response.fluvial_fecha) ;
+                response.costotercero_fecha = new Date(response.costotercero_fecha);
+                response.otrosgastos_fecha = new Date(response.otrosgastos_fecha);
 
                   this._note.next(response);
               })
@@ -379,6 +389,30 @@ export class ManifiestoService
             updatedManifiesto.fluvial_fecha = null;
             updatedManifiesto.fluvial_numerodoc  = '';
             updatedManifiesto.fluvial_adicional  = 0;
+        }
+
+
+
+        if(updatedManifiesto.costotercero_facturado)
+        {
+            updatedManifiesto.costotercero_fecha =  moment(updatedManifiesto.costotercero_fecha).format('DD/MM/YYYY');
+        }
+        else
+        {
+            updatedManifiesto.costotercero_fecha = null;
+            updatedManifiesto.costotercero_numerodoc  = '';
+            updatedManifiesto.costotercero  = 0;
+        }
+
+        if(updatedManifiesto.otrosgastos_facturado)
+        {
+            updatedManifiesto.otrosgastos_fecha =  moment(updatedManifiesto.otrosgastos_fecha).format('DD/MM/YYYY');
+        }
+        else
+        {
+            updatedManifiesto.otrosgastos_fecha = null;
+            updatedManifiesto.otrosgastos_numerodoc  = '';
+            updatedManifiesto.otrosgastos  = 0;
         }
 
 

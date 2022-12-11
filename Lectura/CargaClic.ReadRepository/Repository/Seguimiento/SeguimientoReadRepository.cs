@@ -68,7 +68,7 @@ namespace CargaClic.ReadRepository.Repository.Despacho
 
         public async Task<IEnumerable<GetOrdenTransporte>> GetAllOrdenTransporte(string remitente_id
         , int? estado_id
-        , int usuario_id, string fec_ini, string fec_fin, int? tiposervicio_id )
+        , int usuario_id, string fec_ini, string fec_fin,  string pedido )
         {
             var parametros = new DynamicParameters();
             parametros.Add("remitente_id", dbType: DbType.String, direction: ParameterDirection.Input, value: remitente_id);
@@ -76,7 +76,7 @@ namespace CargaClic.ReadRepository.Repository.Despacho
             parametros.Add("usuario_id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: usuario_id);
             parametros.Add("fecini", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_ini);
             parametros.Add("fecfin", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_fin);
-            parametros.Add("tiposervicio_id", dbType: DbType.Int32, direction: ParameterDirection.Input, value: tiposervicio_id);
+            parametros.Add("pedido", dbType: DbType.String, direction: ParameterDirection.Input, value: pedido);
             
 
             using (IDbConnection conn = Connection)
@@ -135,13 +135,14 @@ namespace CargaClic.ReadRepository.Repository.Despacho
             }
         }
 
-        public async Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id, string fec_ini, string fec_fin)
+        public async Task<GetTotalDespachos> GetTotalDespachos(int? remitente_id, string fec_ini, int? tiposervicioid)
         {
             var parametros = new DynamicParameters();
             parametros.Add("cliente_id", dbType: DbType.Int64, direction: ParameterDirection.Input, value: remitente_id);
+            parametros.Add("tiposervicioid", dbType: DbType.Int64, direction: ParameterDirection.Input, value: tiposervicioid);
             parametros.Add("fecini", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_ini);
-            parametros.Add("fecfin", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_fin);
-    
+            parametros.Add("fecfin", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_ini);
+
             using (IDbConnection conn = Connection)
             {
                 string sQuery = "[seguimiento].[PA_TOTAL_DESPACHOS]";
@@ -154,7 +155,8 @@ namespace CargaClic.ReadRepository.Repository.Despacho
                 return result.FirstOrDefault();
             }
         }
-         public async Task<GetDespachosATiempo> GetDespachosATiempo(int? remitente_id, string fec_ini, string fec_fin)
+        
+        public async Task<GetDespachosATiempo> GetDespachosATiempo(int? remitente_id, string fec_ini, string fec_fin)
         {
             var parametros = new DynamicParameters();
             parametros.Add("cliente_id", dbType: DbType.Int64, direction: ParameterDirection.Input, value: remitente_id);
@@ -776,10 +778,13 @@ namespace CargaClic.ReadRepository.Repository.Despacho
             }
         }
 
-        public async Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(string fecha)
+        public async Task<IEnumerable<GetOrdenTransporte>> getPendientesPorDia(int? remitente_id, string fec_ini, int? tiposervicioid)
         {
-           var parametros = new DynamicParameters();
-           parametros.Add("fecha", dbType: DbType.String, direction: ParameterDirection.Input, value: fecha);    
+            var parametros = new DynamicParameters();
+            parametros.Add("cliente_id", dbType: DbType.Int64, direction: ParameterDirection.Input, value: remitente_id);
+            parametros.Add("tiposervicioid", dbType: DbType.Int64, direction: ParameterDirection.Input, value: tiposervicioid);
+            parametros.Add("fecini", dbType: DbType.String, direction: ParameterDirection.Input, value: fec_ini);
+            
            
             using (IDbConnection conn = Connection)
             {

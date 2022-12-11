@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Extensions.Configuration;
-using CargaClic.Data.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
@@ -23,7 +22,6 @@ using CargaClic.ReadRepository.Contracts.Seguimiento.Results;
 using System.Collections.Generic;
 using System.IO.Compression;
 using CargaClic.Data;
-using System.Globalization;
 
 namespace CargaClic.API.Controllers.Despacho
 {
@@ -98,30 +96,45 @@ namespace CargaClic.API.Controllers.Despacho
                 carga.estado_id = 1;
                 carga.fecha_registro = DateTime.Now;
             
-
-            
                 var resp =  await _repo.RegisterCargaMasiva(carga, entidades);
 
-                //Generar Ordenes de trabajo y Manifiestos      
-                var detalles_cargados =  _repo_CargaMasiva.GetAll(x=>x.carga_id == resp).Result;
+                 //Generar Ordenes de trabajo y Manifiestos      
+                 var detalles_cargados = await _repo_CargaMasiva.GetAll(x=>x.carga_id == resp);
+                 
 
-
-                var lista = detalles_cargados.ToList();
-                var manifiestos = _seguimiento.ObtenerEntidades_Manifiesto(lista);
-                //Registrar manifiestos 
-                await _repo.RegisterOrdenes(manifiestos,usrid);
-
-                
+                //  var lista = detalles_cargados.ToList();
+                //  var manifiestos = await _seguimiento.ObtenerEntidades_Manifiesto(lista);
+                // //Registrar manifiestos 
+                // await _repo.RegisterOrdenes(manifiestos,usrid);
+                return Ok(detalles_cargados);
 
             }
             catch (System.Exception ex)
             {
-                return Ok(ex.Message);
-                throw ex;
+               throw ex;
               
             }
-            return Ok();
+            
          }
+
+
+        [HttpPost ("procesarCargaMasiva")]
+        public async Task<IActionResult> procesarCargaMasiva (CargaMasivaDto obj)
+        {
+
+            var detalles_cargados =  _repo_CargaMasiva.GetAll(x=>x.carga_id == obj.id).Result;
+
+
+            var lista = detalles_cargados.ToList();
+            var manifiestos = await _seguimiento.ObtenerEntidades_Manifiesto(lista);
+            //Registrar manifiestos 
+            await _repo.RegisterOrdenes(manifiestos,obj.idusuario);
+
+            return Ok(detalles_cargados);
+        }
+
+
+
         private async Task<string> SaveFile(long usuario_id)
         {
             
@@ -169,9 +182,9 @@ namespace CargaClic.API.Controllers.Despacho
      
 
         [HttpGet("getPendientesPorDia")] 
-        public async Task<IActionResult> getPendientesPorDia(string fecha)
+        public async Task<IActionResult> getPendientesPorDia(int? remitente_id, string fec_ini, int? tiposervicioid)
         {
-            var result = await _seguimiento.getPendientesPorDia(fecha);
+            var result = await _seguimiento.getPendientesPorDia(remitente_id,fec_ini,tiposervicioid);
             return Ok(result);
         }
 
@@ -223,9 +236,9 @@ namespace CargaClic.API.Controllers.Despacho
 
 
         [HttpGet("GetAllOrder")]
-        public async Task<IActionResult> GetAllOrder(string remitente_id, int? estado_id, int usuario_id, string fec_ini, string fec_fin, int? tiposervicio_id= null)
+        public async Task<IActionResult> GetAllOrder(string remitente_id, int? estado_id, int usuario_id, string fec_ini, string fec_fin, string pedido)
         {
-             var result  = await _seguimiento.Listar_OrdensTransporte(remitente_id,  estado_id, usuario_id, fec_ini, fec_fin, tiposervicio_id);
+             var result  = await _seguimiento.Listar_OrdensTransporte(remitente_id,  estado_id, usuario_id, fec_ini, fec_fin, pedido);
              return Ok(result);
         }
         [HttpGet("GetChofer")]
@@ -1224,7 +1237,7 @@ namespace CargaClic.API.Controllers.Despacho
         
 
 
-            return Ok("ordentrabajo");
+            return Ok(ordentrabajo);
 
        
 
@@ -1456,9 +1469,9 @@ namespace CargaClic.API.Controllers.Despacho
 
 
         [HttpGet("GetCantidadDespacho")]
-        public async Task<IActionResult> GetCantidadDespacho(int? remitente_id, string fec_ini, string fec_fin)
+        public async Task<IActionResult> GetCantidadDespacho(int? remitente_id, string fec_ini, int? tiposervicioid)
         {
-            var result = await _reporte.GetTotalDespachos(remitente_id, fec_ini,fec_fin);
+            var result = await _reporte.GetTotalDespachos(remitente_id, fec_ini,tiposervicioid);
             return Ok (result);
         }
         [HttpGet("GetTotalActivity")]
@@ -1608,7 +1621,7 @@ namespace CargaClic.API.Controllers.Despacho
             var result = await _seguimiento.GetSustentoManifiesto(manifiesto);
             return Ok(result);
         }
-
+      
         [HttpGet("GetDocumentosSustento")] 
         public async Task<IActionResult> GetDocumentosSustento(long? sustento,int? tipo)
         {
@@ -1701,6 +1714,12 @@ namespace CargaClic.API.Controllers.Despacho
             return Ok(result);
         }
 
+        [HttpDelete("DeleteSustento")]
+        public async Task<IActionResult> DeleteSustento(long id)
+        {
+            var result = await _repo.DeleteSustento(id) ;
+            return Ok(result);
+        }
 
         ////////////////////////////////////////////////
         ////////////////////////////////////////////////
@@ -1848,9 +1867,9 @@ namespace CargaClic.API.Controllers.Despacho
                     
                 });
 
-                var manifiestos = await _seguimiento.ObtenerEntidades_Manifiesto_autorex(lista);
+               // var manifiestos = await _seguimiento.ObtenerEntidades_Manifiesto_autorex(lista);
                 //Registrar manifiestos 
-                await _repo.RegisterOrdenes_Interface(manifiestos,296);
+               // await _repo.RegisterOrdenes_Interface(manifiestos,296);
 
             }
             return Ok(result);
@@ -1938,12 +1957,7 @@ namespace CargaClic.API.Controllers.Despacho
         // }
 
 
-        [HttpDelete("DeleteSustento")]
-        public async Task<IActionResult> DeleteSustento(long id)
-        {
-            var result = await _repo.DeleteSustento(id) ;
-            return Ok(result);
-        }
+      
         [HttpGet("GetOrdenByWayPoint")]
         public async Task<IActionResult> GetOrdenByWayPoint(long manifiesto_id, string lat , string lng, int tiempo, string ordenentrega)
         { 
