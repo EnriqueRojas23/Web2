@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@progress/kendo-angular-l10n": "^4.0.1",
     "@syncfusion/ej2-angular-grids": "^19.2.56"
   }
 }
